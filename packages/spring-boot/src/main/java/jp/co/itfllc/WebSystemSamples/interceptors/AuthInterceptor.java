@@ -50,10 +50,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // トークンが存在しないか、Bearerトークンでない場合は401エラーを返します
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return false;
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "認可に失敗しました。再ログインしてください。");
         }
 
         // BearerトークンからJWTを抽出します
@@ -67,13 +64,19 @@ public class AuthInterceptor implements HandlerInterceptor {
             Optional<UsersEntity> userOptional = this.usersMapper.selectByAccount(claims.getSubject());
 
             if (userOptional.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "ユーザーデータが存在しません。");
+                throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "認可に失敗しました。ユーザーデータが存在しません。"
+                );
             }
 
             UsersEntity user = userOptional.get();
 
             if (user.getDisabledAt() != null) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "ユーザーデータが無効化されています。");
+                throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "認可に失敗しました。ユーザーデータが無効化されています。"
+                );
             }
 
             // 取得したユーザー情報をリクエスト属性に設定します
