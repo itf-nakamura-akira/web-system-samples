@@ -9,7 +9,7 @@
         "vscode": {
             "settings": {
                 "editor.codeLens": true,
-                "eslint.workingDirectories": ["./packages/browser", "./packages/webapi/hono"],
+                "eslint.workingDirectories": ["./packages/elysia"],
                 "java.compile.nullAnalysis.mode": "automatic",
                 "java.referencesCodeLens.enabled": true,
                 "npm.packageManager": "bun",
