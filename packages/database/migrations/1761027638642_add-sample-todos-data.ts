@@ -25,7 +25,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
 
             pgm.sql(`
                 INSERT INTO public.todos
-                    (created_by, assignee_id, title, memo, due_date, completed_at)
+                    (creator_id, assignee_id, title, memo, due_date, completed_at)
                 VALUES
                     ('${userId}', '${userId}', '${title}', '${memo}', '${dueDate.toISOString().split('T')[0]}', ${isCompleted ? 'now()' : 'NULL'});
             `);
@@ -48,7 +48,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
 
                 pgm.sql(`
                     INSERT INTO public.todos
-                        (created_by, assignee_id, title, memo, due_date, completed_at)
+                        (creator_id, assignee_id, title, memo, due_date, completed_at)
                     VALUES
                         ('${otherUser.id}', '${userId}', '${title}', '${memo}', '${dueDate.toISOString().split('T')[0]}', ${isCompleted ? 'now()' : 'NULL'});
                 `);

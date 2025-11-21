@@ -18,7 +18,7 @@ public class TodosEntity {
     /**
      * 作成者ID
      */
-    private String createdBy;
+    private String creatorId;
 
     /**
      * 担当者ID
