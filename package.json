@@ -1,0 +1,12 @@
+{
+    "name": "web-system-samples",
+    "private": true,
+    "scripts": {
+        "format": "prettier . --write",
+        "format:spring-boot": "prettier ./packages/spring-boot/ --write --ignore-path /dev/null"
+    },
+    "devDependencies": {
+        "prettier-plugin-organize-imports": "^4.3.0",
+        "prettier": "3.6.2"
+    }
+}
