@@ -4,7 +4,9 @@
     "private": true,
     "scripts": {
         "up": "node-pg-migrate -j ts up 1",
-        "down": "node-pg-migrate -j ts down 1"
+        "down": "node-pg-migrate -j ts down 1",
+        "dev-data:insert": "bun setup/dev-data.insert.ts",
+        "dev-data:delete": "bun setup/dev-data.delete.ts"
     },
     "dependencies": {
         "pg": "^8.16.3"

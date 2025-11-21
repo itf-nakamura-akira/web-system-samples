@@ -9,6 +9,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
             account text NOT NULL,
             hashed_password text NOT NULL,
             "name" text NOT NULL,
+            "role" public."role" DEFAULT 'Common' NOT NULL,
             disabled_at timestamp with time zone NULL,
             CONSTRAINT users_pk PRIMARY KEY (id),
             CONSTRAINT users_unique UNIQUE (account)
@@ -21,6 +22,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
         COMMENT ON COLUMN public.users.account IS 'アカウント名';
         COMMENT ON COLUMN public.users.hashed_password IS 'ハッシュ化済みパスワード';
         COMMENT ON COLUMN public.users."name" IS '表示名';
+        COMMENT ON COLUMN public.users."role" IS '機能(画面・API)の使用権限に関わるロール';
         COMMENT ON COLUMN public.users.disabled_at IS '無効化日時';
     `);
 }
