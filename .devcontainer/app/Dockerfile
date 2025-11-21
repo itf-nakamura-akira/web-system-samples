@@ -23,4 +23,4 @@ RUN rm nodesource_setup.sh
 
 # Bun
 # https://bun.sh/
-RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.2.23"
+RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.2"
