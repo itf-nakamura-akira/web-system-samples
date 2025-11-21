@@ -17,7 +17,7 @@ console.log(`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.por
 if (process.env.NODE_ENV === 'development') {
     console.log('OpenAPI Specification: http://localhost:56080/openapi');
 
-    // Open API 仕様書ファイルの生成
+    // OpenAPI 仕様書ファイルの生成
     try {
         const response: Response = await fetch('http://localhost:8080/openapi/json');
         const jsonText: string = await response.text();
