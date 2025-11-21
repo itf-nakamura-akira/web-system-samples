@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jp.co.itfllc.WebSystemSamples.mappers.UsersMapper;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import jp.co.itfllc.WebSystemSamples.utils.JwtUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -37,6 +38,9 @@ class LoginControllerTest {
 
     @MockitoBean
     private JwtUtils jwtUtils;
+
+    @MockitoBean
+    private UsersMapper usersMapper;
 
     @Test
     @DisplayName("正常系: 認証が成功した場合、アクセストークンとリフレッシュトークンが返されること")

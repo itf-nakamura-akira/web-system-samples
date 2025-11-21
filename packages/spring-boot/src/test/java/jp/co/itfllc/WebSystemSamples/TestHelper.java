@@ -21,6 +21,6 @@ public class TestHelper {
      * @return ユーザー情報。ユーザーが存在しない場合はnullを返します。
      */
     public UsersEntity getUserByAccount(String account) {
-        return usersMapper.selectByAccount(account);
+        return usersMapper.selectByAccount(account).get();
     }
 }

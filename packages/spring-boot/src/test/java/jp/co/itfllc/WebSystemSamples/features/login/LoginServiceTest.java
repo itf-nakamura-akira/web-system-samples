@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import jp.co.itfllc.WebSystemSamples.mappers.UsersMapper;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import jp.co.itfllc.WebSystemSamples.utils.CryptoUtils;
@@ -56,7 +57,7 @@ public class LoginServiceTest {
         dummyUser.setAccount("testuser");
         dummyUser.setHashedPassword("hashed_password");
 
-        when(usersMapper.selectByAccount("testuser")).thenReturn(dummyUser);
+        when(usersMapper.selectByAccount("testuser")).thenReturn(Optional.of(dummyUser));
         cryptoUtilsMock.when(() -> CryptoUtils.verifyPassword("hashed_password", "password123")).thenReturn(true);
 
         // WHEN: ログイン処理を呼び出すと
@@ -71,7 +72,7 @@ public class LoginServiceTest {
     @DisplayName("ログイン失敗のテスト（ユーザーが存在しない）")
     void testLogin_Failure_UserNotFound() {
         // GIVEN: ユーザーが存在しない場合
-        when(usersMapper.selectByAccount(anyString())).thenReturn(null);
+        when(usersMapper.selectByAccount(anyString())).thenReturn(Optional.empty());
 
         // WHEN: ログイン処理を呼び出すと
         // THEN: ResponseStatusExceptionがスローされること
@@ -91,7 +92,7 @@ public class LoginServiceTest {
         dummyUser.setAccount("testuser");
         dummyUser.setHashedPassword("hashed_password");
 
-        when(usersMapper.selectByAccount("testuser")).thenReturn(dummyUser);
+        when(usersMapper.selectByAccount("testuser")).thenReturn(Optional.of(dummyUser));
         cryptoUtilsMock.when(() -> CryptoUtils.verifyPassword("hashed_password", "wrongpassword")).thenReturn(false);
 
         // WHEN: ログイン処理を呼び出すと

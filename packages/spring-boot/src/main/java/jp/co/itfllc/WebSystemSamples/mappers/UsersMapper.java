@@ -1,6 +1,7 @@
 package jp.co.itfllc.WebSystemSamples.mappers;
 
 import java.util.List;
+import java.util.Optional;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,12 +11,20 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UsersMapper {
     /**
+     * IDでユーザーを取得する
+     *
+     * @param id ID
+     * @return ユーザーレコード
+     */
+    Optional<UsersEntity> selectById(String id);
+
+    /**
      * アカウントでユーザーを取得する
      *
      * @param account アカウント
      * @return ユーザーレコード
      */
-    UsersEntity selectByAccount(String account);
+    Optional<UsersEntity> selectByAccount(String account);
 
     /**
      * ユーザーを挿入する

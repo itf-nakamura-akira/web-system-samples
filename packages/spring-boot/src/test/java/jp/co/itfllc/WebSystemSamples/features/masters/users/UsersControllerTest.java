@@ -12,8 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import jp.co.itfllc.WebSystemSamples.WebMvcConfig;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
+import jp.co.itfllc.WebSystemSamples.interceptors.AuthInterceptor;
+import jp.co.itfllc.WebSystemSamples.mappers.UsersMapper;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import jp.co.itfllc.WebSystemSamples.utils.JwtUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 /**
  * UsersController の単体テストクラスです。
  */
-@WebMvcTest({ UsersController.class, WebMvcConfig.class, JwtUtils.class })
+@WebMvcTest({ UsersController.class, WebMvcConfig.class, JwtUtils.class, AuthInterceptor.class })
 public class UsersControllerTest {
 
     @Autowired
@@ -35,6 +38,9 @@ public class UsersControllerTest {
 
     @MockitoBean
     private UsersService usersService;
+
+    @MockitoBean
+    private UsersMapper usersMapper;
 
     @MockitoBean
     private JwtUtils jwtUtils;
@@ -47,6 +53,10 @@ public class UsersControllerTest {
         // GIVEN: 有効なJWTトークンが与えられた場合
         Claims claims = new DefaultClaims(new HashMap<>(Map.of("sub", "testuser")));
         when(jwtUtils.getClaims(VALID_TOKEN)).thenReturn(claims);
+        UsersEntity loginUser = new UsersEntity();
+        loginUser.setId("testuser");
+        loginUser.setAccount("testuser");
+        when(usersMapper.selectByAccount("testuser")).thenReturn(Optional.of(loginUser));
 
         // GIVEN: 無効なJWTトークンが与えられた場合
         when(jwtUtils.getClaims(INVALID_TOKEN)).thenThrow(new RuntimeException("Invalid token"));

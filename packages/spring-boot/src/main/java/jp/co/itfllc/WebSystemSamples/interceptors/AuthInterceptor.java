@@ -3,10 +3,15 @@ package jp.co.itfllc.WebSystemSamples.interceptors;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
+import jp.co.itfllc.WebSystemSamples.mappers.UsersMapper;
+import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import jp.co.itfllc.WebSystemSamples.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
@@ -20,6 +25,11 @@ public class AuthInterceptor implements HandlerInterceptor {
      * JWTユーティリティクラス
      */
     private final JwtUtils jwtUtils;
+
+    /**
+     * ユーザーテーブル向け Mapper
+     */
+    private final UsersMapper usersMapper;
 
     /**
      * リクエストのプリハンドリングを行います。
@@ -53,16 +63,26 @@ public class AuthInterceptor implements HandlerInterceptor {
             // JWTを検証します
             Claims claims = this.jwtUtils.getClaims(token);
 
-            // TODO: DBに有効なユーザーか問い合わせる
-            // claimsオブジェクトからユーザー情報を取得する等、必要に応じて処理を追加できます
-            System.out.println(claims.getSubject());
+            // ユーザー情報の取得
+            Optional<UsersEntity> userOptional = this.usersMapper.selectByAccount(claims.getSubject());
+
+            if (userOptional.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "ユーザーデータが存在しません。");
+            }
+
+            UsersEntity user = userOptional.get();
+
+            if (user.getDisabledAt() != null) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "ユーザーデータが無効化されています。");
+            }
+
+            // 取得したユーザー情報をリクエスト属性に設定します
+            // ex) public List<Hoge> getHoge(@RequestAttribute("user") UsersEntity loginUser){...}
+            request.setAttribute("user", user);
 
             return true;
         } catch (Exception e) {
-            // JWTの検証に失敗した場合は401エラーを返します
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return false;
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "認可に失敗しました。再ログインしてください。");
         }
     }
 }

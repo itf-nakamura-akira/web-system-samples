@@ -3,6 +3,7 @@ package jp.co.itfllc.WebSystemSamples.mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import org.junit.jupiter.api.DisplayName;
@@ -32,10 +33,11 @@ class UsersMapperTest {
             String account = "nakamura.akira";
 
             // WHEN
-            UsersEntity user = usersMapper.selectByAccount(account);
+            Optional<UsersEntity> userOptional = usersMapper.selectByAccount(account);
 
             // THEN
-            assertThat(user).isNotNull();
+            assertThat(userOptional).isPresent();
+            UsersEntity user = userOptional.get();
             assertThat(user.getAccount()).isEqualTo(account);
             assertThat(user.getHashedPassword()).isNotEmpty();
             assertThat(user.getDisabledAt()).isNull();
@@ -50,10 +52,10 @@ class UsersMapperTest {
             String account = "nonexistent";
 
             // WHEN
-            UsersEntity user = usersMapper.selectByAccount(account);
+            Optional<UsersEntity> user = usersMapper.selectByAccount(account);
 
             // THEN
-            assertThat(user).isNull();
+            assertThat(user).isNotPresent();
         }
     }
 
@@ -109,6 +111,51 @@ class UsersMapperTest {
             assertThat(users.get(0).getDisabledAt()).isNull();
             assertThat(users.get(0).getRole()).isEqualTo(Role.Admin);
             assertThat(users.get(0).getName()).isEqualTo("中村輝");
+        }
+    }
+
+    @Nested
+    @DisplayName("selectByIdのテスト")
+    class SelectById {
+
+        @Test
+        @DisplayName("指定したIDが存在する場合、ユーザー情報が取得できること")
+        void testSelectById_existingUser() {
+            // GIVEN
+            // 既存のユーザー情報を取得
+            UsersEntity expectedUser = usersMapper.selectByAccount("nakamura.akira").get();
+            String userId = expectedUser.getId();
+
+            // WHEN
+            // IDでユーザー情報を取得
+            Optional<UsersEntity> actualUserOptional = usersMapper.selectById(userId);
+
+            // THEN
+            // 取得したユーザー情報が期待通りであることを検証
+            assertThat(actualUserOptional).isPresent();
+            UsersEntity actualUser = actualUserOptional.get();
+            assertThat(actualUser.getId()).isEqualTo(expectedUser.getId());
+            assertThat(actualUser.getAccount()).isEqualTo(expectedUser.getAccount());
+            assertThat(actualUser.getHashedPassword()).isEqualTo(expectedUser.getHashedPassword());
+            assertThat(actualUser.getName()).isEqualTo(expectedUser.getName());
+            assertThat(actualUser.getDisabledAt()).isEqualTo(expectedUser.getDisabledAt());
+            assertThat(actualUser.getRole()).isEqualTo(expectedUser.getRole());
+        }
+
+        @Test
+        @DisplayName("指定したIDが存在しない場合、nullが返却されること")
+        void testSelectById_nonExistingUser() {
+            // GIVEN
+            // 存在しないUUIDを生成
+            String nonExistingId = "00000000-0000-0000-0000-000000000000";
+
+            // WHEN
+            // 存在しないIDでユーザー情報を取得
+            Optional<UsersEntity> user = usersMapper.selectById(nonExistingId);
+
+            // THEN
+            // 結果がnullであることを検証
+            assertThat(user).isNotPresent();
         }
     }
 }

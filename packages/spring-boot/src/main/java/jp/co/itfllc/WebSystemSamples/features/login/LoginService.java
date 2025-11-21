@@ -1,5 +1,6 @@
 package jp.co.itfllc.WebSystemSamples.features.login;
 
+import java.util.Optional;
 import jp.co.itfllc.WebSystemSamples.mappers.UsersMapper;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import jp.co.itfllc.WebSystemSamples.utils.CryptoUtils;
@@ -28,13 +29,13 @@ public class LoginService {
      * @return ログインユーザー
      */
     public UsersEntity login(String account, String password) {
-        UsersEntity user = this.usersMapper.selectByAccount(account);
+        Optional<UsersEntity> user = this.usersMapper.selectByAccount(account);
 
-        if (user == null || !CryptoUtils.verifyPassword(user.getHashedPassword(), password)) {
+        if (user.isEmpty() || !CryptoUtils.verifyPassword(user.get().getHashedPassword(), password)) {
             // アカウントまたはパスワードが誤っている場合は、401エラーを返却します。
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "アカウントまたはパスワードが誤っています。");
         }
 
-        return user;
+        return user.get();
     }
 }
