@@ -5,11 +5,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.impl.DefaultClaims;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import jp.co.itfllc.WebSystemSamples.WebMvcConfig;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
+import jp.co.itfllc.WebSystemSamples.utils.JwtUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 /**
  * UsersController の単体テストクラスです。
  */
-@WebMvcTest(UsersController.class)
+@WebMvcTest({ UsersController.class, WebMvcConfig.class, JwtUtils.class })
 public class UsersControllerTest {
 
     @Autowired
@@ -28,6 +35,22 @@ public class UsersControllerTest {
 
     @MockitoBean
     private UsersService usersService;
+
+    @MockitoBean
+    private JwtUtils jwtUtils;
+
+    private final String VALID_TOKEN = "valid-token";
+    private final String INVALID_TOKEN = "invalid-token";
+
+    @BeforeEach
+    public void setup() {
+        // GIVEN: 有効なJWTトークンが与えられた場合
+        Claims claims = new DefaultClaims(new HashMap<>(Map.of("sub", "testuser")));
+        when(jwtUtils.getClaims(VALID_TOKEN)).thenReturn(claims);
+
+        // GIVEN: 無効なJWTトークンが与えられた場合
+        when(jwtUtils.getClaims(INVALID_TOKEN)).thenThrow(new RuntimeException("Invalid token"));
+    }
 
     @Test
     @DisplayName("ユーザーリストが正しく取得できること")
@@ -55,7 +78,7 @@ public class UsersControllerTest {
         // WHEN: ユーザーリスト取得APIを呼び出すと
         // THEN: 200 OKが返却され、2件のユーザー情報が返却されること
         mockMvc
-            .perform(get("/masters/users"))
+            .perform(get("/masters/users").header("Authorization", "Bearer " + VALID_TOKEN))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.users.length()").value(2))
             .andExpect(jsonPath("$.users[0].id").value("user1"))
@@ -68,5 +91,23 @@ public class UsersControllerTest {
             .andExpect(jsonPath("$.users[1].name").value("テストユーザー2"))
             .andExpect(jsonPath("$.users[1].disabledAt").isNotEmpty())
             .andExpect(jsonPath("$.users[1].role").value("Admin"));
+    }
+
+    @Test
+    @DisplayName("Authorizationヘッダーがない場合、401エラーが返されること")
+    public void testGetList_NoAuthHeader() throws Exception {
+        // WHEN: Authorizationヘッダーなしでユーザーリスト取得APIを呼び出すと
+        // THEN: 401 Unauthorizedが返されること
+        mockMvc.perform(get("/masters/users")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("無効なAuthorizationヘッダーの場合、401エラーが返されること")
+    public void testGetList_InvalidAuthHeader() throws Exception {
+        // WHEN: 無効なAuthorizationヘッダーでユーザーリスト取得APIを呼び出すと
+        // THEN: 401 Unauthorizedが返されること
+        mockMvc
+            .perform(get("/masters/users").header("Authorization", "Bearer " + INVALID_TOKEN))
+            .andExpect(status().isUnauthorized());
     }
 }
