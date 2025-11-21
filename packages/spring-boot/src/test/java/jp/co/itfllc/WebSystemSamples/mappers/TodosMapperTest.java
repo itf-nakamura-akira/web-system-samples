@@ -44,6 +44,15 @@ class TodosMapperTest {
             assertThat(actual).hasSize(8);
             assertThat(actual.get(0).getAssigneeId()).isEqualTo(assigneeUser.getId());
             assertThat(actual.get(0).getTitle()).isNotNull();
+            assertThat(actual.get(0).getCreator()).isNotNull();
+            assertThat(actual.get(0).getAssignee()).isNotNull();
+            assertThat(actual.get(0).getMemo()).isNotNull();
+            assertThat(actual.get(0).getDueDate()).isNull();
+            assertThat(actual.get(0).getCompletedAt()).isNotNull();
+            assertThat(actual.get(0).getCreatedAt()).isNotNull();
+            assertThat(actual.get(0).getUpdatedAt()).isNotNull();
+            assertThat(actual.get(1).getDueDate()).isNotNull();
+            assertThat(actual.get(1).getCompletedAt()).isNull();
         }
 
         @Test

@@ -27,7 +27,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
                 INSERT INTO public.todos
                     (creator_id, assignee_id, title, memo, due_date, completed_at)
                 VALUES
-                    ('${userId}', '${userId}', '${title}', '${memo}', '${dueDate.toISOString().split('T')[0]}', ${isCompleted ? 'now()' : 'NULL'});
+                    ('${userId}', '${userId}', '${title}', '${memo}', ${isCompleted ? 'NULL' : `'${dueDate.toISOString().split('T')[0]}'`}, ${isCompleted ? 'now()' : 'NULL'});
             `);
         }
 
@@ -50,7 +50,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
                     INSERT INTO public.todos
                         (creator_id, assignee_id, title, memo, due_date, completed_at)
                     VALUES
-                        ('${otherUser.id}', '${userId}', '${title}', '${memo}', '${dueDate.toISOString().split('T')[0]}', ${isCompleted ? 'now()' : 'NULL'});
+                        ('${otherUser.id}', '${userId}', '${title}', '${memo}', ${isCompleted ? 'NULL' : `'${dueDate.toISOString().split('T')[0]}'`}, ${isCompleted ? 'now()' : 'NULL'});
                 `);
             }
         }
