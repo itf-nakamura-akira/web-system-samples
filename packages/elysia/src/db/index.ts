@@ -12,7 +12,7 @@ export default drizzle({
         ...relations,
     },
     connection: {
-        url: encodeURI(process.env.DATABASE_URL!),
+        url: encodeURI(process.env.DATABASE_URL! + '?application_name=Elysia'),
         max: os.cpus().length * 2 + 1,
         idleTimeout: 300,
     },
