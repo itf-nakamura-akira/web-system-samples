@@ -1,8 +1,8 @@
 /**
- * 認証エラー
+ * 認可エラー
  */
-export class Unauthorized extends Error {
-    readonly status = 401;
+export class Forbidden extends Error {
+    readonly status = 403;
 
     constructor(
         public message: string,
