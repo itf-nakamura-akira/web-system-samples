@@ -3,7 +3,7 @@
 ## マイグレーションファイルの作成コマンド
 
 ```bash
-bun run migrate create hoge-migration
+bunx node-pg-migrate create create-hoge-table
 ```
 
 ## マイグレーション up

@@ -2,9 +2,8 @@
     "name": "database",
     "private": true,
     "scripts": {
-        "migrate": "node-pg-migrate -j ts",
-        "up": "npm run migrate up",
-        "down": "npm run migrate down"
+        "up": "node-pg-migrate -j ts up 1",
+        "down": "node-pg-migrate -j ts down 1"
     },
     "dependencies": {
         "pg": "^8.16.3"
