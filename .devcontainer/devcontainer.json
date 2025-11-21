@@ -33,7 +33,8 @@
                 "ludwhe.vscode-uuid",
                 "oven.bun-vscode",
                 "vmware.vscode-boot-dev-pack",
-                "vscjava.vscode-java-test"
+                "vscjava.vscode-java-test",
+                "yangbaopan.vscode-java-ibatisx"
             ]
         }
     },

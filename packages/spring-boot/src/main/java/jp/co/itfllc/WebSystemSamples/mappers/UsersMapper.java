@@ -2,7 +2,6 @@ package jp.co.itfllc.WebSystemSamples.mappers;
 
 import jp.co.itfllc.WebSystemSamples.entities.Users;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 /**
  * ユーザーテーブル向け Mapper
@@ -15,16 +14,6 @@ public interface UsersMapper {
      * @param account アカウント
      * @return ユーザーレコード
      */
-    @Select(
-        """
-            SELECT
-                *
-            FROM
-                users
-            WHERE
-                account = #{account};
-        """
-    )
     Users selectByAccount(String account);
 
     /**
@@ -33,15 +22,5 @@ public interface UsersMapper {
      * @param user 挿入するユーザーレコード
      * @return 挿入されたユーザーレコード
      */
-    @Select(
-        """
-            INSERT INTO users
-                (account, hashed_password, "name", disabled_at, "role")
-            VALUES
-                (#{account}, #{hashedPassword}, #{name}, #{disabledAt}, #{role}::role)
-            RETURNING
-                *;
-        """
-    )
     Users insert(Users user);
 }
