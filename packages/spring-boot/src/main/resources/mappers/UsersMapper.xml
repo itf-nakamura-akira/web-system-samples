@@ -17,4 +17,12 @@
         RETURNING
             *;
     </select>
+    <select id="selectList" resultType="UsersEntity">
+        SELECT
+            *
+        FROM
+            users
+        ORDER BY
+            id;
+    </select>
 </mapper>

@@ -1,24 +1,24 @@
 package jp.co.itfllc.WebSystemSamples.features.login;
 
 import java.util.HashMap;
-import jp.co.itfllc.WebSystemSamples.features.login.models.PostLoginRequest;
-import jp.co.itfllc.WebSystemSamples.features.login.models.PostLoginResponse;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import jp.co.itfllc.WebSystemSamples.utils.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * ログイン画面用 Controller
+ * ログイン画面 コントローラークラス
  */
 @RestController
 @RequestMapping("/login")
+@RequiredArgsConstructor
 public class LoginController {
 
     /**
-     * ログイン画面用 Service
+     * ログイン画面 サービスクラス
      */
     private final LoginService loginService;
 
@@ -26,17 +26,6 @@ public class LoginController {
      * JWTユーティリティクラス
      */
     private final JwtUtils jwtUtils;
-
-    /**
-     * コンストラクタ
-     *
-     * @param loginService ログイン機能用 Service
-     * @param jwtUtils JWTユーティリティ
-     */
-    public LoginController(LoginService loginService, JwtUtils jwtUtils) {
-        this.loginService = loginService;
-        this.jwtUtils = jwtUtils;
-    }
 
     /**
      * ログイン認証
@@ -56,3 +45,13 @@ public class LoginController {
         return new PostLoginResponse(accessToken, refreshToken);
     }
 }
+
+/**
+ * ログイン認証 リクエストモデル
+ */
+record PostLoginRequest(String account, String password) {}
+
+/**
+ * ログイン認証 レスポンスモデル
+ */
+record PostLoginResponse(String accessToken, String refreshToken) {}

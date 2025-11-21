@@ -11,6 +11,7 @@
                 "editor.codeLens": true,
                 "eslint.workingDirectories": ["./packages/browser", "./packages/webapi/hono"],
                 "java.compile.nullAnalysis.mode": "automatic",
+                "java.referencesCodeLens.enabled": true,
                 "npm.packageManager": "bun",
                 "npm.scriptRunner": "bun",
                 "workbench.colorCustomizations": {

@@ -2,6 +2,7 @@ package jp.co.itfllc.WebSystemSamples.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import org.junit.jupiter.api.DisplayName;
@@ -82,6 +83,32 @@ class UsersMapperTest {
             assertThat(insertedUser.getName()).isEqualTo(newUser.getName());
             assertThat(insertedUser.getDisabledAt()).isNull();
             assertThat(insertedUser.getRole()).isEqualTo(newUser.getRole());
+        }
+    }
+
+    @Nested
+    @DisplayName("selectListのテスト")
+    class SelectList {
+
+        @Test
+        @DisplayName("ユーザーリストが全件取得できること")
+        void testSelectList_success() {
+            // WHEN
+            // テスト対象のメソッドを実行します
+            List<UsersEntity> users = usersMapper.selectList();
+
+            // THEN
+            // 結果が期待通りであることを検証します
+            assertThat(users).isNotNull().isNotEmpty();
+            // 少なくとも6,000件以上のユーザーが取得できることを確認します
+            assertThat(users.size()).isGreaterThan(6000);
+            // 取得したリストの最初のユーザーの必須項目がnullでないことを確認します
+            assertThat(users.get(0)).isNotNull();
+            assertThat(users.get(0).getAccount()).isEqualTo("nakamura.akira");
+            assertThat(users.get(0).getHashedPassword()).isNotEmpty();
+            assertThat(users.get(0).getDisabledAt()).isNull();
+            assertThat(users.get(0).getRole()).isEqualTo(Role.Admin);
+            assertThat(users.get(0).getName()).isEqualTo("中村輝");
         }
     }
 }
