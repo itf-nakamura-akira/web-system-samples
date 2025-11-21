@@ -2,10 +2,10 @@
     "name": "web-system-samples",
     "private": true,
     "scripts": {
-        "format:root": "prettier . \"!./packages/**/*\" --write",
-        "format:database": "prettier ./packages/database/ --write --ignore-path /dev/null",
-        "format:elysia": "prettier ./packages/elysia/ --write --ignore-path /dev/null",
-        "format:spring-boot": "prettier ./packages/spring-boot/ \"!./packages/spring-boot/target/**/*\" --write"
+        "format:root": "prettier . --write",
+        "format:database": "prettier ./packages/database/ --write --ignore-path ./packages/database/.prettierignore",
+        "format:elysia": "prettier ./packages/elysia/ --write --ignore-path ./packages/elysia/.prettierignore",
+        "format:spring-boot": "prettier ./packages/spring-boot/ --write --ignore-path ./packages/spring-boot/.prettierignore"
     },
     "devDependencies": {
         "@prettier/plugin-xml": "^3.4.2",

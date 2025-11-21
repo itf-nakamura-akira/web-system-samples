@@ -1,12 +1,13 @@
 {
-    "name": "web-system-samples",
+    "name": "web-system-samples-api",
     "version": "0.1.0",
     "module": "src/index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "bun run --watch src/index.ts"
+        "dev": "bun run --watch src/index.ts",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
+        "@elysiajs/openapi": "^1.4.11",
         "elysia": "~1.4.16"
     },
     "devDependencies": {
