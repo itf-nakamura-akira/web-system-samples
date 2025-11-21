@@ -2,11 +2,12 @@
     "name": "web-system-samples",
     "private": true,
     "scripts": {
-        "format": "prettier . --write",
+        "format:root": "prettier . \"!./packages/**/*\" --write",
         "format:database": "prettier ./packages/database/ --write --ignore-path /dev/null",
-        "format:spring-boot": "prettier ./packages/spring-boot/ --write --ignore-path /dev/null"
+        "format:spring-boot": "prettier ./packages/spring-boot/ \"!./packages/spring-boot/target/**/*\" --write"
     },
     "devDependencies": {
+        "@prettier/plugin-xml": "^3.4.2",
         "prettier": "3.6.2",
         "prettier-plugin-java": "^2.7.5",
         "prettier-plugin-organize-imports": "^4.3.0"
