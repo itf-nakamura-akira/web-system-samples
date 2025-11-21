@@ -1,25 +1,13 @@
-import { openapi } from '@elysiajs/openapi';
 import { fetch } from 'bun';
-import packageJson from '../package.json';
 import { errorHandler } from './errors';
 import { modules } from './modules';
+import { openapi } from './openapi';
 
+/**
+ * エントリーポイント
+ */
 export const app = errorHandler
-    .use(
-        openapi({
-            enabled: process.env.NODE_ENV === 'development',
-            documentation: {
-                info: {
-                    title: packageJson.name
-                        .split('-')
-                        .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-                        .join(' '),
-                    description: 'Web System Samples プロジェクトの Web API 仕様書',
-                    version: packageJson.version,
-                },
-            },
-        }),
-    )
+    .use(openapi)
     .use(modules)
     .listen(process.env.SERVER_PORT || 8080);
 
