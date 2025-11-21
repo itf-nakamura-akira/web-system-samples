@@ -3,6 +3,7 @@
     "private": true,
     "scripts": {
         "format": "prettier . --write",
+        "format:database": "prettier ./packages/database/ --write --ignore-path /dev/null",
         "format:spring-boot": "prettier ./packages/spring-boot/ --write --ignore-path /dev/null"
     },
     "devDependencies": {
