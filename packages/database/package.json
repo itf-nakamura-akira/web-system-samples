@@ -1,5 +1,6 @@
 {
     "name": "database",
+    "type": "module",
     "private": true,
     "scripts": {
         "up": "node-pg-migrate -j ts up 1",
