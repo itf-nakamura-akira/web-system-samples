@@ -13,10 +13,15 @@ export async function login(account: string, password: string): Promise<any> {
         );
     }
 
-    console.log(user);
+    const isPasswordValid = await Bun.password.verify(password, user[0].hashedPassword);
 
-    return {
-        id: '019a861e-8e0b-7232-bac0-f3751771bb6a',
-        name: 'nakamura akira',
-    };
+    if (!isPasswordValid) {
+        // パスワードが一致しない場合、エラーをスローします。
+        throw new Unauthorized(
+            'アカウントまたはパスワードが誤っています。',
+            `アカウント ${account} のパスワードが一致しません。`,
+        );
+    }
+
+    return user[0];
 }

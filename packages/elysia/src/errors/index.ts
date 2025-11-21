@@ -1,16 +1,38 @@
 import Elysia from 'elysia';
 import { Unauthorized } from './unauthorized.error';
 
-export const errors = new Elysia()
-    // カスタムエラーの登録
-    .error('UNAUTHORIZED_ERROR', Unauthorized)
-    // グローバルエラーハンドリング
-    .onError(({ error, status }) => {
-        if ('cause' in error && error.cause) {
-            console.error(error.cause);
-        }
+// カスタムエラーの登録
+export const errorHandler = new Elysia().error('UNAUTHORIZED_ERROR', Unauthorized).onError(({ code, error, set }) => {
+    if ('cause' in error && error.cause) {
+        console.error(error.cause);
+    }
 
-        const response = error as { status?: number; message?: string };
+    // カスタムエラーの場合は、エラーに定義されたステータスとメッセージを使用
+    if (code === 'UNAUTHORIZED_ERROR') {
+        set.status = error.status;
 
-        return status(response.status || 500, response.message || 'サーバーでエラーが発生しました。');
-    });
+        return { message: error.message };
+    }
+
+    set.status = 500;
+
+    return { message: 'サーバーでエラーが発生しました。' };
+});
+
+// // グローバルエラーハンドリング
+// export function errorHandler({ code, error, set }) {
+//     if ('cause' in error && error.cause) {
+//         console.error(error.cause);
+//     }
+
+//     // カスタムエラーの場合は、エラーに定義されたステータスとメッセージを使用
+//     if (code === 'UNAUTHORIZED_ERROR') {
+//         set.status = error.status;
+
+//         return { message: error.message };
+//     }
+
+//     set.status = 500;
+
+//     return { message: 'サーバーでエラーが発生しました。' };
+// };
