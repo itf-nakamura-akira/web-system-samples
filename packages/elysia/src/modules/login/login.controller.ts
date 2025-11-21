@@ -1,15 +1,20 @@
 import Elysia from 'elysia';
+import { users } from '../../db/schema';
+import { jwtAccessToken, jwtRefreshToken } from '../../utils/jwt';
 import * as model from './login.model';
 import * as service from './login.service';
 
-export const login = new Elysia({ prefix: '/login' }).post(
+/**
+ * ログイン Controller
+ */
+export const login = new Elysia({ prefix: '/login' }).use([jwtAccessToken, jwtRefreshToken]).post(
     '',
-    async ({ body }) => {
-        const user = await service.login(body.account, body.password);
+    async ({ jwtAccessToken, jwtRefreshToken, body }) => {
+        const user: typeof users.$inferSelect = await service.login(body.account, body.password);
 
         return {
-            accessToken: 'accessToken',
-            refreshToken: 'refreshToken',
+            accessToken: await jwtAccessToken.sign({ sub: user.account }),
+            refreshToken: await jwtRefreshToken.sign({ sub: user.account }),
         };
     },
     {

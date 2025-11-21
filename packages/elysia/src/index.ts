@@ -7,8 +7,8 @@ import { openapi } from './openapi';
  * エントリーポイント
  */
 export const app = errorHandler
-    .use(openapi)
     .use(modules)
+    .use(openapi)
     .listen(process.env.SERVER_PORT || 8080);
 
 console.log(`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`);
