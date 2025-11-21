@@ -3,5 +3,5 @@
     "tabWidth": 4,
     "singleQuote": true,
     "trailingComma": "all",
-    "plugins": ["@trivago/prettier-plugin-sort-imports"]
+    "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-java"]
 }

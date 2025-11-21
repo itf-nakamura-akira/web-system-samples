@@ -8,6 +8,11 @@
     "customizations": {
         "vscode": {
             "settings": {
+                "editor.codeLens": true,
+                "eslint.workingDirectories": ["./packages/browser", "./packages/webapi/hono"],
+                "java.compile.nullAnalysis.mode": "automatic",
+                "npm.packageManager": "bun",
+                "npm.scriptRunner": "bun",
                 "workbench.colorCustomizations": {
                     "activityBar.background": "#c3ffe4",
                     "activityBar.activeBackground": "#c3ffe4",
@@ -17,11 +22,7 @@
                     "activityBar.activeFocusBorder": "#202020",
                     "activityBar.border": "#000000",
                     "activityBar.dropBorder": "#c3ffe4"
-                },
-                "editor.codeLens": true,
-                "npm.packageManager": "bun",
-                "npm.scriptRunner": "bun",
-                "eslint.workingDirectories": ["./packages/browser", "./packages/webapi/hono"]
+                }
             },
             "extensions": [
                 "angular.ng-template",
@@ -30,7 +31,8 @@
                 "EditorConfig.EditorConfig",
                 "Google.geminicodeassist",
                 "ludwhe.vscode-uuid",
-                "oven.bun-vscode"
+                "oven.bun-vscode",
+                "vmware.vscode-boot-dev-pack"
             ]
         }
     },
