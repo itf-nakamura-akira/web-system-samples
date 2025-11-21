@@ -1,0 +1,48 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node-postgres
+{
+    "name": "Web System Samples",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "workbench.colorCustomizations": {
+                    "activityBar.background": "#c3ffe4",
+                    "activityBar.activeBackground": "#c3ffe4",
+                    "activityBar.foreground": "#202020",
+                    "activityBar.inactiveForeground": "#20202044",
+                    "activityBar.activeBorder": "#202020",
+                    "activityBar.activeFocusBorder": "#202020",
+                    "activityBar.border": "#000000",
+                    "activityBar.dropBorder": "#c3ffe4"
+                },
+                "editor.codeLens": true,
+                "npm.packageManager": "bun",
+                "npm.scriptRunner": "bun",
+                "eslint.workingDirectories": ["./packages/browser", "./packages/webapi/hono"]
+            },
+            "extensions": [
+                "angular.ng-template",
+                "dbaeumer.vscode-eslint",
+                "eamodio.gitlens",
+                "EditorConfig.EditorConfig",
+                "Google.geminicodeassist",
+                "ludwhe.vscode-uuid",
+                "oven.bun-vscode"
+            ]
+        }
+    },
+    // Features to add to the dev container. More info: https://containers.dev/features.
+    "features": {},
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    // This can be used to network with other containers or with the host.
+    // "forwardPorts": [],
+    // Use 'postCreateCommand' to run commands after the container is created.
+    // "postCreateCommand": "bun upgrade",
+    // Configure tool-specific properties.
+    // "customizations": {},
+    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+    "remoteUser": "root"
+}

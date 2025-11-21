@@ -1,0 +1,1 @@
+CREATE DATABASE web_system_samples_test;
