@@ -1,0 +1,208 @@
+{
+    "id": "00000000-0000-0000-0000-000000000000",
+    "prevId": "",
+    "version": "7",
+    "dialect": "postgresql",
+    "tables": {
+        "public.pgmigrations": {
+            "name": "pgmigrations",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "serial",
+                    "primaryKey": true,
+                    "notNull": true
+                },
+                "name": {
+                    "name": "name",
+                    "type": "varchar(255)",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "run_on": {
+                    "name": "run_on",
+                    "type": "timestamp",
+                    "primaryKey": false,
+                    "notNull": true
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {},
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "checkConstraints": {},
+            "policies": {},
+            "isRLSEnabled": false
+        },
+        "public.users": {
+            "name": "users",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "uuid",
+                    "primaryKey": true,
+                    "notNull": true,
+                    "default": "uuidv7()"
+                },
+                "account": {
+                    "name": "account",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "hashed_password": {
+                    "name": "hashed_password",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "name": {
+                    "name": "name",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "role": {
+                    "name": "role",
+                    "type": "role",
+                    "typeSchema": "public",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": "'Common'"
+                },
+                "disabled_at": {
+                    "name": "disabled_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": false
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {},
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {
+                "users_unique": {
+                    "columns": ["account"],
+                    "nullsNotDistinct": false,
+                    "name": "users_unique"
+                }
+            },
+            "checkConstraints": {},
+            "policies": {},
+            "isRLSEnabled": false
+        },
+        "public.todos": {
+            "name": "todos",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "uuid",
+                    "primaryKey": true,
+                    "notNull": true,
+                    "default": "uuidv7()"
+                },
+                "creator_id": {
+                    "name": "creator_id",
+                    "type": "uuid",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "assignee_id": {
+                    "name": "assignee_id",
+                    "type": "uuid",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "title": {
+                    "name": "title",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "memo": {
+                    "name": "memo",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "due_date": {
+                    "name": "due_date",
+                    "type": "date",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "completed_at": {
+                    "name": "completed_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": false
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": "now()"
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": "now()"
+                }
+            },
+            "indexes": {},
+            "foreignKeys": {
+                "todos_creator_id_fk": {
+                    "name": "todos_creator_id_fk",
+                    "tableFrom": "todos",
+                    "tableTo": "users",
+                    "schemaTo": "public",
+                    "columnsFrom": ["creator_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "cascade",
+                    "onUpdate": "no action"
+                },
+                "todos_assignee_id_fk": {
+                    "name": "todos_assignee_id_fk",
+                    "tableFrom": "todos",
+                    "tableTo": "users",
+                    "schemaTo": "public",
+                    "columnsFrom": ["assignee_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "cascade",
+                    "onUpdate": "no action"
+                }
+            },
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "checkConstraints": {},
+            "policies": {},
+            "isRLSEnabled": false
+        }
+    },
+    "enums": {
+        "public.role": {
+            "name": "role",
+            "values": ["Admin", "Common"],
+            "schema": "public"
+        }
+    },
+    "schemas": {},
+    "sequences": {},
+    "roles": {},
+    "policies": {},
+    "views": {},
+    "_meta": {
+        "schemas": {},
+        "tables": {},
+        "columns": {}
+    },
+    "internal": {
+        "tables": {}
+    }
+}
