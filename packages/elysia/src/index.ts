@@ -2,9 +2,11 @@ import { openapi } from '@elysiajs/openapi';
 import { fetch } from 'bun';
 import { Elysia } from 'elysia';
 import packageJson from '../package.json';
+import { errors } from './errors';
 import { modules } from './modules';
 
 export const app = new Elysia()
+    .use(errors)
     .use(
         openapi({
             enabled: process.env.NODE_ENV === 'development',

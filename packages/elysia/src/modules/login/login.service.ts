@@ -1,12 +1,17 @@
 import db from '../../db';
+import { Unauthorized } from '../../errors/unauthorized.error';
 
 export async function login(account: string, password: string): Promise<any> {
     const user = await db.query.users.findFirst({
         where: (users, { eq }) => eq(users.account, account),
-        with: {
-            createdTodos: true,
-        },
     });
+
+    if (!user) {
+        throw new Unauthorized(
+            'アカウントまたはパスワードが誤っています。',
+            `アカウント ${account} が users テーブルに見つかりません。`,
+        );
+    }
 
     console.log(user);
 
