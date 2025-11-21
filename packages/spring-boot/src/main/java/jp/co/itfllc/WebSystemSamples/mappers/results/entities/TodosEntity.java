@@ -1,4 +1,4 @@
-package jp.co.itfllc.WebSystemSamples.entities;
+package jp.co.itfllc.WebSystemSamples.mappers.results.entities;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -8,7 +8,7 @@ import lombok.Data;
  * TODOテーブル
  */
 @Data
-public class Todos {
+public class TodosEntity {
 
     /**
      * ID

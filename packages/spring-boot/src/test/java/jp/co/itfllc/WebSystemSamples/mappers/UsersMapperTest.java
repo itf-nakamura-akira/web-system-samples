@@ -2,8 +2,9 @@ package jp.co.itfllc.WebSystemSamples.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jp.co.itfllc.WebSystemSamples.entities.Users;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
+import jp.co.itfllc.WebSystemSamples.mappers.results.UsersResult;
+import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ class UsersMapperTest {
             String account = "nakamura.akira";
 
             // WHEN
-            Users user = usersMapper.selectByAccount(account);
+            UsersResult user = usersMapper.selectByAccount(account);
 
             // THEN
             assertThat(user).isNotNull();
@@ -49,7 +50,7 @@ class UsersMapperTest {
             String account = "nonexistent";
 
             // WHEN
-            Users user = usersMapper.selectByAccount(account);
+            UsersResult user = usersMapper.selectByAccount(account);
 
             // THEN
             assertThat(user).isNull();
@@ -64,7 +65,7 @@ class UsersMapperTest {
         @DisplayName("新しいユーザーがDBに保存できること")
         void testInsert_newUser() {
             // GIVEN
-            Users newUser = new Users();
+            UsersEntity newUser = new UsersEntity();
             newUser.setAccount("test.user");
             newUser.setHashedPassword("test_password_hashed");
             newUser.setName("テストユーザー");
@@ -72,7 +73,7 @@ class UsersMapperTest {
             newUser.setRole(Role.Admin);
 
             // WHEN
-            Users insertedUser = usersMapper.insert(newUser);
+            UsersResult insertedUser = usersMapper.insert(newUser);
 
             // THEN
             assertThat(insertedUser).isNotNull();

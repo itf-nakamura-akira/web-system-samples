@@ -1,6 +1,7 @@
 package jp.co.itfllc.WebSystemSamples.mappers;
 
-import jp.co.itfllc.WebSystemSamples.entities.Users;
+import jp.co.itfllc.WebSystemSamples.mappers.results.UsersResult;
+import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -14,7 +15,7 @@ public interface UsersMapper {
      * @param account アカウント
      * @return ユーザーレコード
      */
-    Users selectByAccount(String account);
+    UsersResult selectByAccount(String account);
 
     /**
      * ユーザーを挿入する
@@ -22,5 +23,5 @@ public interface UsersMapper {
      * @param user 挿入するユーザーレコード
      * @return 挿入されたユーザーレコード
      */
-    Users insert(Users user);
+    UsersResult insert(UsersEntity user);
 }

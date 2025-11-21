@@ -1,4 +1,4 @@
-package jp.co.itfllc.WebSystemSamples.entities;
+package jp.co.itfllc.WebSystemSamples.mappers.results.entities;
 
 import java.time.OffsetDateTime;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
@@ -8,7 +8,7 @@ import lombok.Data;
  * ユーザーテーブル
  */
 @Data
-public class Users {
+public class UsersEntity {
 
     /**
      * ID
