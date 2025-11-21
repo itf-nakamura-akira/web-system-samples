@@ -7,5 +7,14 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TodosResult extends TodosEntity {
-    // TODO 担当者の表示名とか取得する
+
+    /**
+     * 作成者
+     */
+    private String creator;
+
+    /**
+     * 担当者
+     */
+    private String assignee;
 }

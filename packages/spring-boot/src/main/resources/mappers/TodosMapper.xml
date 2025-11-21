@@ -3,10 +3,20 @@
 <mapper namespace="jp.co.itfllc.WebSystemSamples.mappers.TodosMapper">
     <select id="selectByAssigneeId" resultType="TodosResult">
         SELECT
-            *
+            t.*,
+            au.name AS creator,
+            cu.name AS assignee
         FROM
-            todos
+            todos t
+        INNER JOIN
+            users cu
+        ON
+            t.creator_id = cu.id
+        INNER JOIN
+            users au
+        ON
+            t.assignee_id = au.id
         WHERE
-            assignee_id = #{assigneeId}::uuid;
+            t.assignee_id = #{assigneeId}::uuid;
     </select>
 </mapper>
