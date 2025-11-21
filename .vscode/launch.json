@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot: WebSystemSamplesApplication",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/packages/spring-boot",
+            "mainClass": "jp.co.itfllc.WebSystemSamples.WebSystemSamplesApplication",
+            "projectName": "web-system-samples",
+            "args": "",
+            "envFile": "${workspaceFolder}/.devcontainer/app/.env"
+        }
+    ]
+}

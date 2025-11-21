@@ -32,7 +32,8 @@
                 "Google.geminicodeassist",
                 "ludwhe.vscode-uuid",
                 "oven.bun-vscode",
-                "vmware.vscode-boot-dev-pack"
+                "vmware.vscode-boot-dev-pack",
+                "vscjava.vscode-java-test"
             ]
         }
     },
