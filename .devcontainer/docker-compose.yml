@@ -17,6 +17,9 @@ services:
         depends_on:
             - db
 
+        ports:
+            - '56080:8080' # Backend
+
     db:
         container_name: web-system-samples-db
 

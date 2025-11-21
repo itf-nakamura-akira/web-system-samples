@@ -3,7 +3,6 @@ package jp.co.itfllc.WebSystemSamples.mappers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import jp.co.itfllc.WebSystemSamples.enums.Role;
-import jp.co.itfllc.WebSystemSamples.mappers.results.UsersResult;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -32,7 +31,7 @@ class UsersMapperTest {
             String account = "nakamura.akira";
 
             // WHEN
-            UsersResult user = usersMapper.selectByAccount(account);
+            UsersEntity user = usersMapper.selectByAccount(account);
 
             // THEN
             assertThat(user).isNotNull();
@@ -50,7 +49,7 @@ class UsersMapperTest {
             String account = "nonexistent";
 
             // WHEN
-            UsersResult user = usersMapper.selectByAccount(account);
+            UsersEntity user = usersMapper.selectByAccount(account);
 
             // THEN
             assertThat(user).isNull();
@@ -73,7 +72,7 @@ class UsersMapperTest {
             newUser.setRole(Role.Admin);
 
             // WHEN
-            UsersResult insertedUser = usersMapper.insert(newUser);
+            UsersEntity insertedUser = usersMapper.insert(newUser);
 
             // THEN
             assertThat(insertedUser).isNotNull();

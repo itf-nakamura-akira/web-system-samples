@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import jp.co.itfllc.WebSystemSamples.TestHelper;
 import jp.co.itfllc.WebSystemSamples.mappers.results.TodosResult;
-import jp.co.itfllc.WebSystemSamples.mappers.results.UsersResult;
+import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ class TodosMapperTest {
         @DisplayName("存在する担当者IDを指定した場合、紐づくTODOリストが返されること")
         void testSelectByAssigneeId_whenAssigneeExists() {
             // GIVEN
-            UsersResult assigneeUser = testHelper.getUserByAccount("nakamura.akira");
+            UsersEntity assigneeUser = testHelper.getUserByAccount("nakamura.akira");
 
             // WHEN
             List<TodosResult> actual = todosMapper.selectByAssigneeId(assigneeUser.getId());
