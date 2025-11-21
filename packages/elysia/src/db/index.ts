@@ -16,4 +16,5 @@ export default drizzle({
         max: os.cpus().length * 2 + 1,
         idleTimeout: 300,
     },
+    logger: process.env.NODE_ENV === 'development',
 });
