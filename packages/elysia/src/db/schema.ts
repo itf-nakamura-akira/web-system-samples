@@ -1,12 +1,15 @@
 import { sql } from 'drizzle-orm';
-import { date, foreignKey, pgEnum, pgTable, serial, text, timestamp, unique, uuid, varchar } from 'drizzle-orm/pg-core';
+import { date, foreignKey, pgEnum, pgSequence, pgTable, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
 
 export const role = pgEnum('role', ['Admin', 'Common']);
 
-export const pgmigrations = pgTable('pgmigrations', {
-    id: serial().primaryKey().notNull(),
-    name: varchar({ length: 255 }).notNull(),
-    runOn: timestamp('run_on', { mode: 'string' }).notNull(),
+export const pgmigrationsIdSeq = pgSequence('pgmigrations_id_seq', {
+    startWith: '1',
+    increment: '1',
+    minValue: '1',
+    maxValue: '2147483647',
+    cache: '1',
+    cycle: false,
 });
 
 export const users = pgTable(
