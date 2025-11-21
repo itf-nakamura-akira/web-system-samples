@@ -4,6 +4,7 @@
     "scripts": {
         "format:root": "prettier . \"!./packages/**/*\" --write",
         "format:database": "prettier ./packages/database/ --write --ignore-path /dev/null",
+        "format:elysia": "prettier ./packages/elysia/ --write --ignore-path /dev/null",
         "format:spring-boot": "prettier ./packages/spring-boot/ \"!./packages/spring-boot/target/**/*\" --write"
     },
     "devDependencies": {
