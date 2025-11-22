@@ -27,16 +27,33 @@ import org.springframework.stereotype.Component;
 public class JwtUtils {
 
     /**
-     * 秘密鍵文字列
+     * JSONオブジェクトマッパー
      */
-    @Value("${app.jwt.secret-private-key}")
-    private String privateKeyString;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
-     * 公開鍵文字列
+     * 秘密鍵文字列(アクセストークン)
      */
-    @Value("${app.jwt.secret-public-key}")
-    private String publicKeyString;
+    @Value("${app.jwt.access.secret-private-key}")
+    private String accessPrivateKeyString;
+
+    /**
+     * 公開鍵文字列(アクセストークン)
+     */
+    @Value("${app.jwt.access.secret-public-key}")
+    private String accessPublicKeyString;
+
+    /**
+     * 秘密鍵文字列(リフレッシュトークン)
+     */
+    @Value("${app.jwt.refresh.secret-private-key}")
+    private String refreshPrivateKeyString;
+
+    /**
+     * 公開鍵文字列(リフレッシュトークン)
+     */
+    @Value("${app.jwt.refresh.secret-public-key}")
+    private String refreshPublicKeyString;
 
     /**
      * JWTの発行者
@@ -57,19 +74,24 @@ public class JwtUtils {
     private long refreshTokenExpireDays;
 
     /**
-     * 秘密鍵
+     * 秘密鍵(アクセストークン)
      */
-    private PrivateKey privateKey;
+    private PrivateKey accessPrivateKey;
 
     /**
-     * 公開鍵
+     * 公開鍵(アクセストークン)
      */
-    private PublicKey publicKey;
+    private PublicKey accessPublicKey;
 
     /**
-     * JSONオブジェクトマッパー
+     * 秘密鍵(リフレッシュトークン)
      */
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private PrivateKey refreshPrivateKey;
+
+    /**
+     * 公開鍵(リフレッシュトークン)
+     */
+    private PublicKey refreshPublicKey;
 
     /**
      * 初期化メソッド
@@ -78,8 +100,10 @@ public class JwtUtils {
     @PostConstruct
     public void init() {
         try {
-            this.privateKey = this.loadPrivateKey(this.privateKeyString);
-            this.publicKey = this.loadPublicKey(this.publicKeyString);
+            this.accessPrivateKey = this.loadPrivateKey(this.accessPrivateKeyString);
+            this.accessPublicKey = this.loadPublicKey(this.accessPublicKeyString);
+            this.refreshPrivateKey = this.loadPrivateKey(this.refreshPrivateKeyString);
+            this.refreshPublicKey = this.loadPublicKey(this.refreshPublicKeyString);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             // アプリケーションの起動時にキーの読み込みに失敗した場合は、致命的なエラーとして処理します。
             throw new RuntimeException("Failed to load JWT keys", e);
@@ -96,7 +120,7 @@ public class JwtUtils {
     public <T> String generateAccessToken(String subject, T payload) {
         long expirationMillis = accessTokenExpireMinutes * 60 * 1000;
 
-        return this.generateToken(subject, payload, expirationMillis);
+        return this.generateToken(subject, payload, expirationMillis, this.accessPrivateKey);
     }
 
     /**
@@ -109,23 +133,27 @@ public class JwtUtils {
     public <T> String generateRefreshToken(String subject, T payload) {
         long expirationMillis = refreshTokenExpireDays * 24 * 60 * 60 * 1000;
 
-        return this.generateToken(subject, payload, expirationMillis);
+        return this.generateToken(subject, payload, expirationMillis, this.refreshPrivateKey);
     }
 
     /**
-     * JWTを検証し、クレームを取得します。
+     * JWT(アクセストークン)を検証し、クレームを取得します。
      *
      * @param token 検証するJWT文字列
      * @return JWTのクレーム
      */
-    public Claims getClaims(String token) {
-        Jws<Claims> jws = Jwts.parser()
-            .verifyWith(this.publicKey)
-            .requireIssuer(this.issuer)
-            .build()
-            .parseSignedClaims(token);
+    public Claims getClaimsFromAccessToken(String token) {
+        return this.getClaims(token, this.accessPublicKey);
+    }
 
-        return jws.getPayload();
+    /**
+     * JWT(リフレッシュトークン)を検証し、クレームを取得します。
+     *
+     * @param token 検証するJWT文字列
+     * @return JWTのクレーム
+     */
+    public Claims getClaimsFromRefreshToken(String token) {
+        return this.getClaims(token, this.refreshPublicKey);
     }
 
     /**
@@ -166,9 +194,10 @@ public class JwtUtils {
      * @param subject JWTの主題
      * @param payload クレームとして含めるオブジェクト
      * @param expirationMillis 有効期限（ミリ秒）
+     * @param privateKey 秘密鍵
      * @return 生成されたJWT文字列
      */
-    private <T> String generateToken(String subject, T payload, long expirationMillis) {
+    private <T> String generateToken(String subject, T payload, long expirationMillis, PrivateKey privateKey) {
         Map<String, Object> claims = objectMapper.convertValue(payload, new TypeReference<Map<String, Object>>() {});
 
         Date now = new Date();
@@ -180,7 +209,24 @@ public class JwtUtils {
             .claims(claims)
             .issuedAt(now)
             .expiration(expiration)
-            .signWith(this.privateKey)
+            .signWith(privateKey)
             .compact();
+    }
+
+    /**
+     * JWTを検証し、クレームを取得します。
+     *
+     * @param token 検証するJWT文字列
+     * @param publicKey 公開鍵
+     * @return JWTのクレーム
+     */
+    private Claims getClaims(String token, PublicKey publicKey) {
+        Jws<Claims> jws = Jwts.parser()
+            .verifyWith(publicKey)
+            .requireIssuer(this.issuer)
+            .build()
+            .parseSignedClaims(token);
+
+        return jws.getPayload();
     }
 }

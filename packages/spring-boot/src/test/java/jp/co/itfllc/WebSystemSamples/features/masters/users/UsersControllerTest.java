@@ -52,14 +52,14 @@ public class UsersControllerTest {
     public void setup() {
         // GIVEN: 有効なJWTトークンが与えられた場合
         Claims claims = new DefaultClaims(new HashMap<>(Map.of("sub", "testuser")));
-        when(jwtUtils.getClaims(VALID_TOKEN)).thenReturn(claims);
+        when(jwtUtils.getClaimsFromAccessToken(VALID_TOKEN)).thenReturn(claims);
         UsersEntity loginUser = new UsersEntity();
         loginUser.setId("testuser");
         loginUser.setAccount("testuser");
         when(usersMapper.selectByAccount("testuser")).thenReturn(Optional.of(loginUser));
 
         // GIVEN: 無効なJWTトークンが与えられた場合
-        when(jwtUtils.getClaims(INVALID_TOKEN)).thenThrow(new RuntimeException("Invalid token"));
+        when(jwtUtils.getClaimsFromAccessToken(INVALID_TOKEN)).thenThrow(new RuntimeException("Invalid token"));
     }
 
     @Test

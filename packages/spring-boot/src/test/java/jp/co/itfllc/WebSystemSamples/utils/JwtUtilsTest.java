@@ -113,7 +113,7 @@ class JwtUtilsTest {
         assertNotNull(token);
 
         // 生成されたトークンを検証し、クレームが正しいことを確認します。
-        Claims claims = jwtUtils.getClaims(token);
+        Claims claims = jwtUtils.getClaimsFromAccessToken(token);
         assertEquals(issuer, claims.getIssuer());
         assertEquals(subject, claims.getSubject());
         assertEquals("user", claims.get("role", String.class));
@@ -136,7 +136,7 @@ class JwtUtilsTest {
         assertNotNull(token);
 
         // 生成されたトークンを検証し、クレームが正しいことを確認します。
-        Claims claims = jwtUtils.getClaims(token);
+        Claims claims = jwtUtils.getClaimsFromAccessToken(token);
         assertEquals(issuer, claims.getIssuer());
         assertEquals(subject, claims.getSubject());
         assertEquals("refresh123", claims.get("tokenId", String.class));
@@ -152,7 +152,7 @@ class JwtUtilsTest {
         String subject = "test-subject";
         String token = jwtUtils.generateAccessToken(subject, Map.of("data", "test-data"));
 
-        Claims claims = jwtUtils.getClaims(token);
+        Claims claims = jwtUtils.getClaimsFromAccessToken(token);
 
         assertEquals(subject, claims.getSubject());
         assertEquals("test-data", claims.get("data", String.class));
@@ -181,7 +181,7 @@ class JwtUtilsTest {
         String expiredToken = expiredJwtUtils.generateAccessToken("test", new HashMap<>());
 
         // 期限切れトークンを検証すると、ExpiredJwtExceptionがスローされることを確認します。
-        assertThrows(ExpiredJwtException.class, () -> jwtUtils.getClaims(expiredToken));
+        assertThrows(ExpiredJwtException.class, () -> jwtUtils.getClaimsFromAccessToken(expiredToken));
     }
 
     @Test
@@ -207,7 +207,7 @@ class JwtUtilsTest {
         String tokenWithWrongSignature = anotherJwtUtils.generateAccessToken("test", new HashMap<>());
 
         // 本来の公開鍵で検証すると、SignatureExceptionがスローされることを確認します。
-        assertThrows(SignatureException.class, () -> jwtUtils.getClaims(tokenWithWrongSignature));
+        assertThrows(SignatureException.class, () -> jwtUtils.getClaimsFromAccessToken(tokenWithWrongSignature));
     }
 
     @Test
@@ -217,7 +217,7 @@ class JwtUtilsTest {
         String token = jwtUtils.generateAccessToken(subject, new HashMap<>());
 
         assertNotNull(token);
-        Claims claims = jwtUtils.getClaims(token);
+        Claims claims = jwtUtils.getClaimsFromAccessToken(token);
         assertEquals(subject, claims.getSubject());
     }
 
@@ -235,7 +235,7 @@ class JwtUtilsTest {
         String token = jwtUtils.generateAccessToken(subject, payload);
 
         assertNotNull(token);
-        Claims claims = jwtUtils.getClaims(token);
+        Claims claims = jwtUtils.getClaimsFromAccessToken(token);
         assertEquals(subject, claims.getSubject());
         assertEquals(123, claims.get("userId", Integer.class));
         assertNotNull(claims.get("roles"));
@@ -266,7 +266,7 @@ class JwtUtilsTest {
 
         // 本来のissuerを要求するjwtUtilsで検証すると例外がスローされる
         Exception exception = assertThrows(io.jsonwebtoken.IncorrectClaimException.class, () -> {
-            jwtUtils.getClaims(token);
+            jwtUtils.getClaimsFromAccessToken(token);
         });
 
         assertTrue(exception.getMessage().contains("Expected iss"));

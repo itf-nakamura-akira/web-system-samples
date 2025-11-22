@@ -58,7 +58,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         try {
             // JWTを検証します
-            Claims claims = this.jwtUtils.getClaims(token);
+            Claims claims = this.jwtUtils.getClaimsFromAccessToken(token);
 
             // ユーザー情報の取得
             Optional<UsersEntity> userOptional = this.usersMapper.selectByAccount(claims.getSubject());

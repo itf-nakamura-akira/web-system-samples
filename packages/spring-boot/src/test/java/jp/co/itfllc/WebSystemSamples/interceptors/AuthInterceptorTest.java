@@ -70,7 +70,7 @@ class AuthInterceptorTest {
     void preHandle_invalidJwt_throwsResponseStatusException() {
         // Arrange
         when(request.getHeader("Authorization")).thenReturn("Bearer invalid-token");
-        when(jwtUtils.getClaims("invalid-token")).thenThrow(new RuntimeException());
+        when(jwtUtils.getClaimsFromAccessToken("invalid-token")).thenThrow(new RuntimeException());
 
         // Act & Assert
         assertThrows(ResponseStatusException.class, () -> {
@@ -84,7 +84,7 @@ class AuthInterceptorTest {
         // Arrange
         when(request.getHeader("Authorization")).thenReturn("Bearer valid-token");
         Claims claims = Jwts.claims().subject("testuser").build();
-        when(jwtUtils.getClaims("valid-token")).thenReturn(claims);
+        when(jwtUtils.getClaimsFromAccessToken("valid-token")).thenReturn(claims);
         when(usersMapper.selectByAccount("testuser")).thenReturn(Optional.empty());
 
         // Act & Assert
@@ -99,7 +99,7 @@ class AuthInterceptorTest {
         // Arrange
         when(request.getHeader("Authorization")).thenReturn("Bearer valid-token");
         Claims claims = Jwts.claims().subject("testuser").build();
-        when(jwtUtils.getClaims("valid-token")).thenReturn(claims);
+        when(jwtUtils.getClaimsFromAccessToken("valid-token")).thenReturn(claims);
         UsersEntity user = new UsersEntity();
         user.setDisabledAt(OffsetDateTime.now());
         when(usersMapper.selectByAccount("testuser")).thenReturn(Optional.of(user));
@@ -116,7 +116,7 @@ class AuthInterceptorTest {
         // Arrange
         when(request.getHeader("Authorization")).thenReturn("Bearer valid-token");
         Claims claims = Jwts.claims().subject("testuser").build();
-        when(jwtUtils.getClaims("valid-token")).thenReturn(claims);
+        when(jwtUtils.getClaimsFromAccessToken("valid-token")).thenReturn(claims);
         UsersEntity user = new UsersEntity();
         when(usersMapper.selectByAccount("testuser")).thenReturn(Optional.of(user));
 

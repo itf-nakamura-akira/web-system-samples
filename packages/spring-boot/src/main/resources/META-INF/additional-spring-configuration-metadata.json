@@ -16,14 +16,24 @@
             "description": "JWTの発行者"
         },
         {
-            "name": "app.jwt.secret-public-key",
+            "name": "app.jwt.access.secret-public-key",
             "type": "java.lang.String",
-            "description": "JWTの公開鍵に使う文字列"
+            "description": "JWT(アクセストークン)の公開鍵に使う文字列"
         },
         {
-            "name": "app.jwt.secret-private-key",
+            "name": "app.jwt.access.secret-private-key",
             "type": "java.lang.String",
-            "description": "JWTの秘密鍵に使う文字列"
+            "description": "JWT(アクセストークン)の秘密鍵に使う文字列"
+        },
+        {
+            "name": "app.jwt.refresh.secret-public-key",
+            "type": "java.lang.String",
+            "description": "JWT(リフレッシュトークン)の公開鍵に使う文字列"
+        },
+        {
+            "name": "app.jwt.refresh.secret-private-key",
+            "type": "java.lang.String",
+            "description": "JWT(リフレッシュトークン)の秘密鍵に使う文字列"
         }
     ]
 }
