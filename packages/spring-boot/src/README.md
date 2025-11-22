@@ -1,3 +1,7 @@
+> **Note**
+> このドキュメントは、`spring-boot`パッケージ内のソースコードの構成と各ファイルの役割について詳細に解説するものです。
+> プロジェクト全体の概要や、ビルド・実行方法については、一つ上の階層の [README.md](../README.md) を参照してください。
+
 # Spring Bootプロジェクト ファイル解説
 
 このドキュメントは、`packages/spring-boot/src` 配下にあるSpring Bootプロジェクトの各ファイルの役割について解説します。
@@ -6,47 +10,44 @@
 
 ```
 src
-├── main
-│   ├── java
-│   │   └── jp/co/itfllc/WebSystemSamples
-│   │       ├── WebMvcConfig.java                 # Web MVC設定
-│   │       ├── WebSystemSamplesApplication.java  # Spring Bootアプリケーションのエントリーポイント
-│   │       ├── advices
-│   │       │   └── GlobalExceptionHandler.java   # グローバルな例外ハンドリング
-│   │       ├── enums
-│   │       │   └── Role.java                     # ユーザーロールのEnum
-│   │       ├── features
-│   │       │   ├── login                         # ログイン機能
-│   │       │   │   ├── LoginController.java
-│   │       │   │   └── LoginService.java
-│   │       │   └── masters
-│   │       │       └── users                     # ユーザー管理機能
-│   │       │           ├── UsersController.java
-│   │       │           └── UsersService.java
-│   │       ├── interceptors
-│   │       │   ├── AdminInterceptor.java         # 管理者権限チェックインターセプター
-│   │       │   └── AuthInterceptor.java          # 認証インターセプター
-│   │       ├── mappers
-│   │       │   ├── TodosMapper.java              # Todosテーブル(MyBatis)
-│   │       │   ├── UsersMapper.java              # Usersテーブル(MyBatis)
-│   │       │   └── results
-│   │       │       ├── TodosResult.java
-│   │       │       └── entities
-│   │       │           ├── TodosEntity.java
-│   │       │           └── UsersEntity.java
-│   │       └── utils
-│   │           ├── CryptoUtils.java              # パスワード暗号化ユーティリティ
-│   │           └── JwtUtils.java                 # JWT生成・検証ユーティリティ
-│   └── resources
-│       ├── application.properties              # アプリケーション設定
-│       ├── mappers
-│       │   ├── TodosMapper.xml                 # TodosMapperのSQL
-│       │   └── UsersMapper.xml                 # UsersMapperのSQL
-│       └── META-INF
-│           └── additional-spring-configuration-metadata.json
-└── test
-    └── java
-        └── ... (テストコード)
+└── main
+    ├── java
+    │   └── jp/co/itfllc/WebSystemSamples
+    │       ├── WebMvcConfig.java                 # Web MVC設定
+    │       ├── WebSystemSamplesApplication.java  # Spring Bootアプリケーションのエントリーポイント
+    │       ├── advices
+    │       │   └── GlobalExceptionHandler.java   # グローバルな例外ハンドリング
+    │       ├── enums
+    │       │   └── Role.java                     # ユーザーロールのEnum
+    │       ├── features
+    │       │   ├── login                         # ログイン機能
+    │       │   │   ├── LoginController.java
+    │       │   │   └── LoginService.java
+    │       │   └── masters
+    │       │       └── users                     # ユーザー管理機能
+    │       │           ├── UsersController.java
+    │       │           └── UsersService.java
+    │       ├── interceptors
+    │       │   ├── AdminInterceptor.java         # 管理者権限チェックインターセプター
+    │       │   └── AuthInterceptor.java          # 認証インターセプター
+    │       ├── mappers
+    │       │   ├── TodosMapper.java              # Todosテーブル(MyBatis)
+    │       │   ├── UsersMapper.java              # Usersテーブル(MyBatis)
+    │       │   └── results
+    │       │       ├── TodosResult.java
+    │       │       └── entities
+    │       │           ├── TodosEntity.java
+    │       │           └── UsersEntity.java
+    │       └── utils
+    │           ├── CryptoUtils.java              # パスワード暗号化ユーティリティ
+    │           └── JwtUtils.java                 # JWT生成・検証ユーティリティ
+    └── resources
+        ├── application.properties              # アプリケーション設定
+        ├── mappers
+        │   ├── TodosMapper.xml                 # TodosMapperのSQL
+        │   └── UsersMapper.xml                 # UsersMapperのSQL
+        └── META-INF
+            └── additional-spring-configuration-metadata.json
 ```
 
 ## 主要ファイル解説
