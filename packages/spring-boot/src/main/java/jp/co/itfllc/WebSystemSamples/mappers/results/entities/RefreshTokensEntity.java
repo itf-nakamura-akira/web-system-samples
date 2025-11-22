@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 import lombok.Data;
 
 /**
- * JWT(リフレッシュトークン)を管理するテーブル
+ * リフレッシュトークン情報を管理するテーブル
  */
 @Data
 public class RefreshTokensEntity {
@@ -22,7 +22,7 @@ public class RefreshTokensEntity {
     /**
      * ハッシュ化済みリフレッシュトークン
      */
-    private String hashedToken;
+    private byte[] hashedToken;
 
     /**
      * 発行日時
@@ -30,7 +30,7 @@ public class RefreshTokensEntity {
     private OffsetDateTime createdAt;
 
     /**
-     * 失効期限
+     * 失効日時
      */
     private OffsetDateTime expiresAt;
 

@@ -2,7 +2,6 @@ package jp.co.itfllc.WebSystemSamples.features.common;
 
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
-import jp.co.itfllc.WebSystemSamples.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -21,11 +20,6 @@ public class CommonController {
      * 共通機能 サービスクラス
      */
     private final CommonService commonService;
-
-    /**
-     * JWTユーティリティクラス
-     */
-    private final JwtUtils jwtUtils;
 
     /**
      * ログインユーザー情報を取得する

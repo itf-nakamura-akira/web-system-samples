@@ -1,14 +1,14 @@
 {
     "properties": [
         {
-            "name": "app.jwt.jwt-refresh-token-expire-days",
-            "type": "java.lang.Long",
-            "description": "JWTのリフレッシュトークンの有効期限(日)"
+            "name": "app.jwt.secret-private-key",
+            "type": "java.lang.String",
+            "description": "JWT(アクセストークン)の秘密鍵に使う文字列"
         },
         {
-            "name": "app.jwt.access-token-expire-minutes",
-            "type": "java.lang.Long",
-            "description": "JWTのアクセストークンの有効期限(分)"
+            "name": "app.jwt.secret-public-key",
+            "type": "java.lang.String",
+            "description": "JWT(アクセストークン)の公開鍵に使う文字列"
         },
         {
             "name": "app.jwt.issuer",
@@ -16,24 +16,14 @@
             "description": "JWTの発行者"
         },
         {
-            "name": "app.jwt.access.secret-public-key",
-            "type": "java.lang.String",
-            "description": "JWT(アクセストークン)の公開鍵に使う文字列"
+            "name": "app.jwt.access-token-expire-minutes",
+            "type": "java.lang.Long",
+            "description": "JWT(アクセストークン)の有効期限(分)"
         },
         {
-            "name": "app.jwt.access.secret-private-key",
-            "type": "java.lang.String",
-            "description": "JWT(アクセストークン)の秘密鍵に使う文字列"
-        },
-        {
-            "name": "app.jwt.refresh.secret-public-key",
-            "type": "java.lang.String",
-            "description": "JWT(リフレッシュトークン)の公開鍵に使う文字列"
-        },
-        {
-            "name": "app.jwt.refresh.secret-private-key",
-            "type": "java.lang.String",
-            "description": "JWT(リフレッシュトークン)の秘密鍵に使う文字列"
+            "name": "app.jwt.refresh-token-expire-days",
+            "type": "java.lang.Long",
+            "description": "リフレッシュトークンの有効期限(日)"
         }
     ]
 }

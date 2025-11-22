@@ -7,12 +7,15 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
 import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
@@ -32,28 +35,26 @@ public class JwtUtils {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
+     * 乱数生成器
+     */
+    private final SecureRandom secureRandom = new SecureRandom();
+
+    /**
+     * Base64エンコーダー
+     */
+    private final Base64.Encoder base64Encoder = Base64.getUrlEncoder().withoutPadding();
+
+    /**
      * 秘密鍵文字列(アクセストークン)
      */
-    @Value("${app.jwt.access.secret-private-key}")
-    private String accessPrivateKeyString;
+    @Value("${app.jwt.secret-private-key}")
+    private String privateKeyString;
 
     /**
      * 公開鍵文字列(アクセストークン)
      */
-    @Value("${app.jwt.access.secret-public-key}")
-    private String accessPublicKeyString;
-
-    /**
-     * 秘密鍵文字列(リフレッシュトークン)
-     */
-    @Value("${app.jwt.refresh.secret-private-key}")
-    private String refreshPrivateKeyString;
-
-    /**
-     * 公開鍵文字列(リフレッシュトークン)
-     */
-    @Value("${app.jwt.refresh.secret-public-key}")
-    private String refreshPublicKeyString;
+    @Value("${app.jwt.secret-public-key}")
+    private String publicKeyString;
 
     /**
      * JWTの発行者
@@ -70,7 +71,7 @@ public class JwtUtils {
     /**
      * リフレッシュトークンの有効期限（日）
      */
-    @Value("${app.jwt.jwt-refresh-token-expire-days}")
+    @Value("${app.jwt.refresh-token-expire-days}")
     private long refreshTokenExpireDays;
 
     /**
@@ -84,26 +85,14 @@ public class JwtUtils {
     private PublicKey accessPublicKey;
 
     /**
-     * 秘密鍵(リフレッシュトークン)
-     */
-    private PrivateKey refreshPrivateKey;
-
-    /**
-     * 公開鍵(リフレッシュトークン)
-     */
-    private PublicKey refreshPublicKey;
-
-    /**
      * 初期化メソッド
      * Base64エンコードされたキー文字列から、PrivateKeyとPublicKeyを生成します。
      */
     @PostConstruct
     public void init() {
         try {
-            this.accessPrivateKey = this.loadPrivateKey(this.accessPrivateKeyString);
-            this.accessPublicKey = this.loadPublicKey(this.accessPublicKeyString);
-            this.refreshPrivateKey = this.loadPrivateKey(this.refreshPrivateKeyString);
-            this.refreshPublicKey = this.loadPublicKey(this.refreshPublicKeyString);
+            this.accessPrivateKey = this.loadPrivateKey(this.privateKeyString);
+            this.accessPublicKey = this.loadPublicKey(this.publicKeyString);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             // アプリケーションの起動時にキーの読み込みに失敗した場合は、致命的なエラーとして処理します。
             throw new RuntimeException("Failed to load JWT keys", e);
@@ -118,22 +107,21 @@ public class JwtUtils {
      * @return 生成されたJWT文字列
      */
     public <T> String generateAccessToken(String subject, T payload) {
-        long expirationMillis = accessTokenExpireMinutes * 60 * 1000;
+        long expirationMillis = this.accessTokenExpireMinutes * 60 * 1000;
 
         return this.generateToken(subject, payload, expirationMillis, this.accessPrivateKey);
     }
 
     /**
-     * 指定されたオブジェクトを基にリフレッシュトークンを生成します。
+     * リフレッシュトークンを生成します。
      *
-     * @param subject JWTの主題
-     * @param payload クレームとして含めるオブジェクト
-     * @return 生成されたリフレッシュトークン文字列
+     * @return リフレッシュトークン
      */
-    public <T> String generateRefreshToken(String subject, T payload) {
-        long expirationMillis = refreshTokenExpireDays * 24 * 60 * 60 * 1000;
+    public String generateRefreshToken() {
+        var randomBytes = new byte[64];
+        this.secureRandom.nextBytes(randomBytes);
 
-        return this.generateToken(subject, payload, expirationMillis, this.refreshPrivateKey);
+        return this.base64Encoder.encodeToString(randomBytes);
     }
 
     /**
@@ -147,13 +135,26 @@ public class JwtUtils {
     }
 
     /**
-     * JWT(リフレッシュトークン)を検証し、クレームを取得します。
+     * リフレッシュトークンをハッシュ化します。
      *
-     * @param token 検証するJWT文字列
-     * @return JWTのクレーム
+     * @param token ハッシュ化するリフレッシュトークン
+     * @return ハッシュ化されたリフレッシュトークン
+     * @throws Exception
      */
-    public Claims getClaimsFromRefreshToken(String token) {
-        return this.getClaims(token, this.refreshPublicKey);
+    public byte[] hashRefreshToken(String token) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-512");
+        byte[] hash = digest.digest(token.getBytes());
+
+        return hash;
+    }
+
+    /**
+     * リフレッシュトークンの失効日時を返します。
+     *
+     * @return リフレッシュトークンの失効日時
+     */
+    public OffsetDateTime getExpiresAt() {
+        return OffsetDateTime.now().plusDays(this.refreshTokenExpireDays);
     }
 
     /**
