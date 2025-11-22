@@ -17,3 +17,15 @@ bun run up
 ```bash
 bun run down
 ```
+
+## テストデータの挿入
+
+```bash
+bun run dev-data:insert
+```
+
+## テストデータの削除
+
+```bash
+bun run dev-data:delete
+```

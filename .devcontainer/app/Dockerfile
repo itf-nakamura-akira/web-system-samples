@@ -24,3 +24,7 @@ RUN rm nodesource_setup.sh
 # Bun
 # https://bun.sh/
 RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.2"
+
+# Gemini CLI
+# https://github.com/google-gemini/gemini-cli
+RUN npm install -g @google/gemini-cli
