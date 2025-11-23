@@ -44,4 +44,12 @@
         WHERE
             hashed_token = #{hashedToken};
     </delete>
+
+    <delete id="deleteExpiredTokens">
+        DELETE
+        FROM
+            refresh_tokens
+        WHERE
+            created_at &lt; NOW() - INTERVAL '30 day';
+    </delete>
 </mapper>

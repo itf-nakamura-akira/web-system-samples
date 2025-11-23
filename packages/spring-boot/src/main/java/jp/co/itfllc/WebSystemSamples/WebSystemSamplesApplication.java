@@ -2,10 +2,12 @@ package jp.co.itfllc.WebSystemSamples;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Web System Samples クラス
  */
+@EnableScheduling
 @SpringBootApplication
 public class WebSystemSamplesApplication {
 

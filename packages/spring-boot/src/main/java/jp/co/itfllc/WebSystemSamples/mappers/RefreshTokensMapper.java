@@ -45,4 +45,9 @@ public interface RefreshTokensMapper {
      * @param hashedToken ハッシュ化されたトークン
      */
     void deleteByHashedToken(final byte[] hashedToken);
+
+    /**
+     * 有効期限切れのリフレッシュトークンを削除する
+     */
+    void deleteExpiredTokens();
 }
