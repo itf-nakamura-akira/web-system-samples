@@ -13,6 +13,18 @@ import java.lang.annotation.Target;
 @ApiResponse(
     responseCode = "403",
     description = "当APIの実行権限がない場合",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+    content = @Content(
+        mediaType = "application/json",
+        schema = @Schema(
+            implementation = ErrorResponse.class,
+            example = """
+                {
+                    "timestamp": "2024-01-01T12:00:00",
+                    "status": 403,
+                    "message": "このAPIを実行する権限がありません。"
+                }
+            """
+        )
+    )
 )
 public @interface ApiForbiddenResponse {}

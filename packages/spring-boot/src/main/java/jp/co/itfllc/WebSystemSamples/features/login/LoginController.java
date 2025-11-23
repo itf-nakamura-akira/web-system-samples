@@ -44,7 +44,16 @@ public class LoginController {
                 description = "アカウントまたはパスワードが誤っている時",
                 content = @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = ErrorResponse.class)
+                    schema = @Schema(
+                        implementation = ErrorResponse.class,
+                        example = """
+                            {
+                                "timestamp": "2024-01-01T12:00:00",
+                                "status": 401,
+                                "message": "アカウントまたはパスワードが誤っています。"
+                            }
+                        """
+                    )
                 )
             ),
         }

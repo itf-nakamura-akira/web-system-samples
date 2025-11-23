@@ -13,6 +13,18 @@ import java.lang.annotation.Target;
 @ApiResponse(
     responseCode = "401",
     description = "認証トークンが無効、または有効期限切れの場合",
-    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+    content = @Content(
+        mediaType = "application/json",
+        schema = @Schema(
+            implementation = ErrorResponse.class,
+            example = """
+                {
+                    "timestamp": "2024-01-01T12:00:00",
+                    "status": 401,
+                    "message": "認証トークンが無効、または有効期限切れです。"
+                }
+            """
+        )
+    )
 )
 public @interface ApiUnauthorizedResponse {}
