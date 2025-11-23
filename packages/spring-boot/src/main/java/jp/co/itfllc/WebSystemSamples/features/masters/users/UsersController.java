@@ -1,7 +1,12 @@
 package jp.co.itfllc.WebSystemSamples.features.masters.users;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.time.OffsetDateTime;
 import java.util.List;
+import jp.co.itfllc.WebSystemSamples.advices.ErrorResponse;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import lombok.RequiredArgsConstructor;
@@ -22,40 +27,65 @@ public class UsersController {
      */
     private final UsersService usersService;
 
-    /**
-     * 登録されているすべてのユーザー情報を取得します。
-     *
-     * @return 全ユーザーの情報を含むレスポンスオブジェクト。
-     */
+    @Operation(
+        summary = "ユーザー一覧取得API",
+        description = "登録されているすべてのユーザー情報を取得します。",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "取得成功時",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = UsersResponse.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "認証トークンが無効、または有効期限切れの場合",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "403",
+                description = "当APIの実行権限がない場合",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class)
+                )
+            ),
+        }
+    )
     @GetMapping
-    public GetListResponse getList() {
+    public UsersResponse getList() {
         final List<UsersEntity> users = this.usersService.getList();
 
-        return new GetListResponse(
+        return new UsersResponse(
             users
                 .stream()
                 .map(user ->
-                    new Users(user.getId(), user.getAccount(), user.getName(), user.getDisabledAt(), user.getRole())
+                    new UserRecord(
+                        user.getId(),
+                        user.getAccount(),
+                        user.getName(),
+                        user.getDisabledAt(),
+                        user.getRole()
+                    )
                 )
                 .toList()
         );
     }
 }
 
-/**
- * ユーザー一覧取得APIのレスポンスボディを表すレコードクラスです。
- *
- * @param users ユーザー情報のリスト
- */
-record GetListResponse(List<Users> users) {}
+@Schema(description = "ユーザー一覧取得APIのレスポンス")
+record UsersResponse(@Schema(description = "ユーザー情報のリスト") List<UserRecord> users) {}
 
-/**
- * レスポンスに含める個々のユーザー情報を表すレコードクラスです。
- *
- * @param id         ユーザーID
- * @param account    アカウント名
- * @param name       ユーザー名
- * @param disabledAt 無効化された日時
- * @param role       役割
- */
-record Users(String id, String account, String name, OffsetDateTime disabledAt, Role role) {}
+@Schema(description = "ユーザー情報")
+record UserRecord(
+    @Schema(description = "ユーザーID") String id,
+    @Schema(description = "アカウント名") String account,
+    @Schema(description = "ユーザー名") String name,
+    @Schema(description = "無効化された日時") OffsetDateTime disabledAt,
+    @Schema(description = "役割") Role role
+) {}

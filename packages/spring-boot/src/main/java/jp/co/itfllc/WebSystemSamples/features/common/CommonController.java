@@ -1,8 +1,15 @@
 package jp.co.itfllc.WebSystemSamples.features.common;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.constraints.NotBlank;
+import jp.co.itfllc.WebSystemSamples.advices.ErrorResponse;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -23,45 +30,67 @@ public class CommonController {
      */
     private final CommonService commonService;
 
-    /**
-     * 現在ログインしているユーザーの情報を取得します。
-     *
-     * @param loginUser 認証インターセプターによってリクエスト属性に設定されたログインユーザーのエンティティ。
-     * @return クライアントに返すためのログインユーザー情報（アカウント、名前、ロール）。
-     */
+    @Operation(
+        summary = "ログインユーザー情報取得API",
+        description = "現在ログインしているユーザーの情報を取得します。",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "取得成功時",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = GetLoginUserResponse.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "認証トークンが無効、または有効期限切れの場合",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class)
+                )
+            ),
+        }
+    )
     @GetMapping("/loginUser")
     public GetLoginUserResponse getLoginUser(@RequestAttribute("user") final UsersEntity loginUser) {
         return new GetLoginUserResponse(loginUser.getAccount(), loginUser.getName(), loginUser.getRole());
     }
 
-    /**
-     * ユーザーのログアウト処理を実行し、関連するリフレッシュトークンを無効化します。
-     *
-     * @param request   無効化するリフレッシュトークンを含むリクエストボディ。
-     * @param loginUser 認証インターセプターによってリクエスト属性に設定されたログインユーザーのエンティティ。
-     * @throws Exception ログアウト処理中に例外が発生した場合。
-     */
+    @Operation(
+        summary = "ログアウトAPI",
+        description = "ユーザーのログアウト処理を実行し、関連するリフレッシュトークンを無効化します。",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "ログアウト成功時"),
+            @ApiResponse(
+                responseCode = "401",
+                description = "認証トークンが無効、または有効期限切れの場合",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class)
+                )
+            ),
+        }
+    )
     @PostMapping("/logout")
     public void postLogout(
-        @RequestBody final LogoutRequest request,
+        @RequestBody @Validated final LogoutRequest request,
         @RequestAttribute("user") final UsersEntity loginUser
     ) throws Exception {
         this.commonService.logout(request.refreshToken(), loginUser);
     }
 }
 
-/**
- * ログインユーザー情報取得APIのレスポンスボディを表すレコードクラスです。
- *
- * @param account アカウント名
- * @param name    ユーザー名
- * @param role    役割
- */
-record GetLoginUserResponse(String account, String name, Role role) {}
+@Schema(description = "ログインユーザー情報取得APIのレスポンス")
+record GetLoginUserResponse(
+    @Schema(description = "アカウント名") String account,
+    @Schema(description = "ユーザー名") String name,
+    @Schema(description = "役割") Role role
+) {}
 
-/**
- * ログアウトAPIへのリクエストボディを表すレコードクラスです。
- *
- * @param refreshToken リフレッシュトークン
- */
-record LogoutRequest(String refreshToken) {}
+@Schema(description = "ログアウトAPIへのリクエスト")
+record LogoutRequest(
+    @Schema(description = "リフレッシュトークン")
+    @NotBlank(message = "リフレッシュトークンが入力されていません。")
+    String refreshToken
+) {}
