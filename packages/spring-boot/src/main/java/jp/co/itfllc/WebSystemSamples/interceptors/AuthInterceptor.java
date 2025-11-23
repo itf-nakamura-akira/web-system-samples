@@ -61,7 +61,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             Claims claims = this.jwtUtils.getClaimsFromAccessToken(token);
 
             // ユーザー情報の取得
-            Optional<UsersEntity> userOptional = this.usersMapper.selectByAccount(claims.getSubject());
+            Optional<UsersEntity> userOptional = this.usersMapper.selectById(claims.getSubject());
 
             if (userOptional.isEmpty()) {
                 throw new ResponseStatusException(
