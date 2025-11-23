@@ -29,7 +29,7 @@ public class UsersController {
      */
     @GetMapping
     public GetListResponse getList() {
-        List<UsersEntity> users = this.usersService.getList();
+        final List<UsersEntity> users = this.usersService.getList();
 
         return new GetListResponse(
             users

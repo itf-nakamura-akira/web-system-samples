@@ -42,9 +42,9 @@ public class AuthInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(
-        @NonNull HttpServletRequest request,
-        @NonNull HttpServletResponse response,
-        @NonNull Object handler
+        @NonNull final HttpServletRequest request,
+        @NonNull final HttpServletResponse response,
+        @NonNull final Object handler
     ) throws Exception {
         // AuthorizationヘッダーからBearerトークンを取得します
         String authHeader = request.getHeader("Authorization");

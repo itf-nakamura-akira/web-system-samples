@@ -20,7 +20,7 @@ public class CryptoUtils {
      * @param password ハッシュ化するパスワード
      * @return ハッシュ化されたパスワード
      */
-    public static String hashPassword(String password) {
+    public static String hashPassword(final String password) {
         if (!StringUtils.hasText(password)) {
             throw new IllegalArgumentException("パスワードが指定されていません。");
         }
@@ -35,7 +35,7 @@ public class CryptoUtils {
      * @param password 検証する平文のパスワード
      * @return パスワードが一致する場合は true、それ以外は false
      */
-    public static boolean verifyPassword(String hash, String password) {
+    public static boolean verifyPassword(final String hash, final String password) {
         if (!StringUtils.hasText(hash)) {
             throw new IllegalArgumentException("ハッシュ化されたパスワードが指定されていません。");
         }

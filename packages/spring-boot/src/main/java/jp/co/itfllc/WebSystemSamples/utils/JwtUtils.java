@@ -106,8 +106,8 @@ public class JwtUtils {
      * @param payload クレームとして含めるオブジェクト
      * @return 生成されたJWT文字列
      */
-    public <T> String generateAccessToken(String subject, T payload) {
-        long expirationMillis = this.accessTokenExpireMinutes * 60 * 1000;
+    public <T> String generateAccessToken(final String subject, final T payload) {
+        final long expirationMillis = this.accessTokenExpireMinutes * 60 * 1000;
 
         return this.generateToken(subject, payload, expirationMillis, this.accessPrivateKey);
     }
@@ -118,7 +118,7 @@ public class JwtUtils {
      * @return リフレッシュトークン
      */
     public String generateRefreshToken() {
-        var randomBytes = new byte[64];
+        final var randomBytes = new byte[64];
         this.secureRandom.nextBytes(randomBytes);
 
         return this.base64Encoder.encodeToString(randomBytes);
@@ -130,7 +130,7 @@ public class JwtUtils {
      * @param token 検証するJWT文字列
      * @return JWTのクレーム
      */
-    public Claims getClaimsFromAccessToken(String token) {
+    public Claims getClaimsFromAccessToken(final String token) {
         return this.getClaims(token, this.accessPublicKey);
     }
 
@@ -141,9 +141,9 @@ public class JwtUtils {
      * @return ハッシュ化されたリフレッシュトークン
      * @throws Exception
      */
-    public byte[] hashRefreshToken(String token) throws Exception {
-        MessageDigest digest = MessageDigest.getInstance("SHA-512");
-        byte[] hash = digest.digest(token.getBytes());
+    public byte[] hashRefreshToken(final String token) throws Exception {
+        final MessageDigest digest = MessageDigest.getInstance("SHA-512");
+        final byte[] hash = digest.digest(token.getBytes());
 
         return hash;
     }
@@ -165,10 +165,10 @@ public class JwtUtils {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
-    private PrivateKey loadPrivateKey(String keyString) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        byte[] keyBytes = Base64.getDecoder().decode(keyString);
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+    private PrivateKey loadPrivateKey(final String keyString) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        final byte[] keyBytes = Base64.getDecoder().decode(keyString);
+        final PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+        final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
         return keyFactory.generatePrivate(spec);
     }
@@ -181,10 +181,10 @@ public class JwtUtils {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
-    private PublicKey loadPublicKey(String keyString) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        byte[] keyBytes = Base64.getDecoder().decode(keyString);
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+    private PublicKey loadPublicKey(final String keyString) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        final byte[] keyBytes = Base64.getDecoder().decode(keyString);
+        final X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+        final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
         return keyFactory.generatePublic(spec);
     }
@@ -198,11 +198,19 @@ public class JwtUtils {
      * @param privateKey 秘密鍵
      * @return 生成されたJWT文字列
      */
-    private <T> String generateToken(String subject, T payload, long expirationMillis, PrivateKey privateKey) {
-        Map<String, Object> claims = objectMapper.convertValue(payload, new TypeReference<Map<String, Object>>() {});
+    private <T> String generateToken(
+        final String subject,
+        final T payload,
+        final long expirationMillis,
+        final PrivateKey privateKey
+    ) {
+        final Map<String, Object> claims = objectMapper.convertValue(
+            payload,
+            new TypeReference<Map<String, Object>>() {}
+        );
 
-        Date now = new Date();
-        Date expiration = new Date(now.getTime() + expirationMillis);
+        final Date now = new Date();
+        final Date expiration = new Date(now.getTime() + expirationMillis);
 
         return Jwts.builder()
             .issuer(this.issuer)
@@ -221,8 +229,8 @@ public class JwtUtils {
      * @param publicKey 公開鍵
      * @return JWTのクレーム
      */
-    private Claims getClaims(String token, PublicKey publicKey) {
-        Jws<Claims> jws = Jwts.parser()
+    private Claims getClaims(final String token, final PublicKey publicKey) {
+        final Jws<Claims> jws = Jwts.parser()
             .verifyWith(publicKey)
             .requireIssuer(this.issuer)
             .build()

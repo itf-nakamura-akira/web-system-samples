@@ -32,7 +32,7 @@ public class CommonService {
      * @param loginUser ログインユーザー情報
      * @throws Exception
      */
-    public void logout(String refreshToken, UsersEntity loginUser) throws Exception {
+    public void logout(final String refreshToken, final UsersEntity loginUser) throws Exception {
         // リフレッシュトークンをハッシュ化する
         final byte[] hashedToken = this.jwtUtils.hashRefreshToken(refreshToken);
 

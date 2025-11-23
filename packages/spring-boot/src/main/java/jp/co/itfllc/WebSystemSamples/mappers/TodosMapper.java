@@ -15,5 +15,5 @@ public interface TodosMapper {
      * @param assigneeId 担当者のユーザーID
      * @return TODOレコード
      */
-    List<TodosResult> selectByAssigneeId(String assigneeId);
+    List<TodosResult> selectByAssigneeId(final String assigneeId);
 }

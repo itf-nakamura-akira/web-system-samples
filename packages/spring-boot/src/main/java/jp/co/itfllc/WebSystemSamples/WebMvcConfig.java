@@ -33,7 +33,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * @param registry インターセプターレジストリ
      */
     @Override
-    public void addInterceptors(@NonNull InterceptorRegistry registry) {
+    public void addInterceptors(@NonNull final InterceptorRegistry registry) {
         registry.addInterceptor(this.authInterceptor).addPathPatterns("/**").excludePathPatterns("/login/**");
         registry.addInterceptor(this.adminInterceptor).addPathPatterns("/masters/**");
     }

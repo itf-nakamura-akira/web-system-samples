@@ -30,7 +30,7 @@ public class CommonController {
      * @return ログインユーザー情報
      */
     @GetMapping("/loginUser")
-    public GetLoginUserResponse getLoginUser(@RequestAttribute("user") UsersEntity loginUser) {
+    public GetLoginUserResponse getLoginUser(@RequestAttribute("user") final UsersEntity loginUser) {
         return new GetLoginUserResponse(loginUser.getAccount(), loginUser.getName(), loginUser.getRole());
     }
 
@@ -42,8 +42,10 @@ public class CommonController {
      * @throws Exception
      */
     @PostMapping("/logout")
-    public void postLogout(@RequestBody LogoutRequest request, @RequestAttribute("user") UsersEntity loginUser)
-        throws Exception {
+    public void postLogout(
+        @RequestBody final LogoutRequest request,
+        @RequestAttribute("user") final UsersEntity loginUser
+    ) throws Exception {
         this.commonService.logout(request.refreshToken(), loginUser);
     }
 }

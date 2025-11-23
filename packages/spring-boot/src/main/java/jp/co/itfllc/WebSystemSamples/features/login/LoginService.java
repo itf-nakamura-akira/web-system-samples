@@ -44,8 +44,8 @@ public class LoginService {
      * @return ログインユーザー
      * @throws Exception
      */
-    public Tokens login(String account, String password) throws Exception {
-        Optional<UsersEntity> user = this.usersMapper.selectByAccount(account);
+    public Tokens login(final String account, final String password) throws Exception {
+        final Optional<UsersEntity> user = this.usersMapper.selectByAccount(account);
 
         if (user.isEmpty() || !CryptoUtils.verifyPassword(user.get().getHashedPassword(), password)) {
             // アカウントまたはパスワードが誤っている場合は、401エラーを返却します。
@@ -53,12 +53,12 @@ public class LoginService {
         }
 
         // アクセストークンとリフレッシュトークンを生成する
-        String usersId = user.get().getId();
-        String accessToken = this.jwtUtils.generateAccessToken(usersId, new HashMap<>());
-        String refreshToken = this.jwtUtils.generateRefreshToken();
+        final String usersId = user.get().getId();
+        final String accessToken = this.jwtUtils.generateAccessToken(usersId, new HashMap<>());
+        final String refreshToken = this.jwtUtils.generateRefreshToken();
 
         // リフレッシュトークンをDBに登録する
-        var refreshTokens = new RefreshTokensEntity();
+        final var refreshTokens = new RefreshTokensEntity();
         refreshTokens.setUsersId(usersId);
         refreshTokens.setHashedToken(this.jwtUtils.hashRefreshToken(refreshToken));
         refreshTokens.setExpiresAt(this.jwtUtils.getExpiresAt());
@@ -75,14 +75,14 @@ public class LoginService {
      * @return 新しいアクセストークンとリフレッシュトークン
      * @throws Exception
      */
-    public Tokens refreshTokens(String refreshToken) throws Exception {
+    public Tokens refreshTokens(final String refreshToken) throws Exception {
         // リフレッシュトークンをハッシュ化する
-        byte[] hashedToken = this.jwtUtils.hashRefreshToken(refreshToken);
+        final byte[] hashedToken = this.jwtUtils.hashRefreshToken(refreshToken);
 
         // リフレッシュトークンをDBから取得する
-        Optional<RefreshTokensEntity> token = this.refreshTokensMapper.selectByHashedToken(hashedToken);
+        final Optional<RefreshTokensEntity> token = this.refreshTokensMapper.selectByHashedToken(hashedToken);
 
-        // トークンが存在しない場合は、401エラーを返却します。
+        // トークンが存在しない場合は、401エラーを返却します
         if (token.isEmpty()) {
             throw new ResponseStatusException(
                 HttpStatus.UNAUTHORIZED,
@@ -90,7 +90,8 @@ public class LoginService {
             );
         }
 
-        // トークンが失効済みの場合は、不正なリクエストとみなし、該当ユーザーのリフレッシュトークンを全て失効させます
+        // トークンが失効済みの場合は不正なリクエストとみなし、該当ユーザーのリフレッシュトークンを全て失効させます
+        // 正規のクライアントから多重リクエストがくることも想定して、メッセージは通常のエラーとして返却します
         if (token.get().getRevoked()) {
             this.refreshTokensMapper.revokeAllByUsersId(token.get().getUsersId());
 
@@ -100,7 +101,7 @@ public class LoginService {
             );
         }
 
-        // トークンが有効期限切れの場合は、401エラーを返却します。
+        // トークンが有効期限切れの場合は、401エラーを返却します
         if (token.get().getExpiresAt().isBefore(OffsetDateTime.now())) {
             throw new ResponseStatusException(
                 HttpStatus.UNAUTHORIZED,
@@ -112,12 +113,12 @@ public class LoginService {
         this.refreshTokensMapper.revokeByHashedToken(hashedToken);
 
         // 新しいアクセストークンとリフレッシュトークンを生成する
-        String usersId = token.get().getUsersId();
-        String newAccessToken = this.jwtUtils.generateAccessToken(usersId, new HashMap<>());
-        String newRefreshToken = this.jwtUtils.generateRefreshToken();
+        final String usersId = token.get().getUsersId();
+        final String newAccessToken = this.jwtUtils.generateAccessToken(usersId, new HashMap<>());
+        final String newRefreshToken = this.jwtUtils.generateRefreshToken();
 
         // 新しいリフレッシュトークンをDBに登録する
-        var newRefreshTokens = new RefreshTokensEntity();
+        final var newRefreshTokens = new RefreshTokensEntity();
         newRefreshTokens.setUsersId(usersId);
         newRefreshTokens.setHashedToken(this.jwtUtils.hashRefreshToken(newRefreshToken));
         newRefreshTokens.setExpiresAt(this.jwtUtils.getExpiresAt());

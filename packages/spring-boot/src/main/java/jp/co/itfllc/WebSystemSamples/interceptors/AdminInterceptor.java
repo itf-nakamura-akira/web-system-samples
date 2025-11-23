@@ -27,11 +27,11 @@ public class AdminInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(
-        @NonNull HttpServletRequest request,
-        @NonNull HttpServletResponse response,
-        @NonNull Object handler
+        @NonNull final HttpServletRequest request,
+        @NonNull final HttpServletResponse response,
+        @NonNull final Object handler
     ) throws Exception {
-        Object userAttribute = request.getAttribute("user");
+        final Object userAttribute = request.getAttribute("user");
 
         if (userAttribute == null) {
             throw new ResponseStatusException(
@@ -44,7 +44,7 @@ public class AdminInterceptor implements HandlerInterceptor {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "予期せぬエラーが発生しました。");
         }
 
-        UsersEntity user = (UsersEntity) userAttribute;
+        final UsersEntity user = (UsersEntity) userAttribute;
 
         if (user.getRole() != Role.Admin) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "この操作を実行する権限がありません。");

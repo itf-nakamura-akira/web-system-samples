@@ -27,8 +27,8 @@ public class LoginController {
      * @throws Exception
      */
     @PostMapping
-    public AuthTokenResponse postLogin(@RequestBody LoginRequest request) throws Exception {
-        Tokens tokens = this.loginService.login(request.account(), request.password());
+    public AuthTokenResponse postLogin(@RequestBody final LoginRequest request) throws Exception {
+        final Tokens tokens = this.loginService.login(request.account(), request.password());
 
         return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());
     }
@@ -41,8 +41,8 @@ public class LoginController {
      * @throws Exception
      */
     @PostMapping("/refresh")
-    public AuthTokenResponse postRefresh(@RequestBody RefreshRequest request) throws Exception {
-        Tokens tokens = this.loginService.refreshTokens(request.refreshToken());
+    public AuthTokenResponse postRefresh(@RequestBody final RefreshRequest request) throws Exception {
+        final Tokens tokens = this.loginService.refreshTokens(request.refreshToken());
 
         return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());
     }

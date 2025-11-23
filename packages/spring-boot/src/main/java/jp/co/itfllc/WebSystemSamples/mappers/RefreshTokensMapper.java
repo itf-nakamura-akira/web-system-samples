@@ -15,7 +15,7 @@ public interface RefreshTokensMapper {
      * @param refreshTokens 挿入するリフレッシュトークンレコード
      * @return 挿入されたリフレッシュトークンレコード
      */
-    RefreshTokensEntity insert(RefreshTokensEntity refreshTokens);
+    RefreshTokensEntity insert(final RefreshTokensEntity refreshTokens);
 
     /**
      * リフレッシュトークン情報を取得する
@@ -23,26 +23,26 @@ public interface RefreshTokensMapper {
      * @param hashedToken ハッシュ化されたトークン
      * @return リフレッシュトークン情報
      */
-    Optional<RefreshTokensEntity> selectByHashedToken(byte[] hashedToken);
+    Optional<RefreshTokensEntity> selectByHashedToken(final byte[] hashedToken);
 
     /**
      * リフレッシュトークン情報を失効済みにする
      *
      * @param hashedToken ハッシュ化されたトークン
      */
-    void revokeByHashedToken(byte[] hashedToken);
+    void revokeByHashedToken(final byte[] hashedToken);
 
     /**
      * ユーザーに紐づくリフレッシュトークンを全て失効済みにする
      *
      * @param usersId ユーザーID
      */
-    void revokeAllByUsersId(String usersId);
+    void revokeAllByUsersId(final String usersId);
 
     /**
      * リフレッシュトークンを削除する
      *
      * @param hashedToken ハッシュ化されたトークン
      */
-    void deleteByHashedToken(byte[] hashedToken);
+    void deleteByHashedToken(final byte[] hashedToken);
 }

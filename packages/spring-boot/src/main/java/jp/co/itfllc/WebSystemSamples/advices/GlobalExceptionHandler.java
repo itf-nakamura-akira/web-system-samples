@@ -24,8 +24,11 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException ex, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
+    public ResponseEntity<Object> handleResponseStatusException(
+        final ResponseStatusException ex,
+        final WebRequest request
+    ) {
+        final Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", ex.getStatusCode().value());
         body.put("message", ex.getReason());
@@ -41,8 +44,8 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleAllUncaughtException(Exception ex, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
+    public ResponseEntity<Object> handleAllUncaughtException(final Exception ex, final WebRequest request) {
+        final Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         body.put("message", "サーバーでエラーが発生しました。");

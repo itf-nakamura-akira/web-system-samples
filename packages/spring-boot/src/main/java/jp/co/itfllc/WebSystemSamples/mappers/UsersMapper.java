@@ -16,7 +16,7 @@ public interface UsersMapper {
      * @param id ID
      * @return ユーザーレコード
      */
-    Optional<UsersEntity> selectById(String id);
+    Optional<UsersEntity> selectById(final String id);
 
     /**
      * アカウントでユーザーを取得する
@@ -24,7 +24,7 @@ public interface UsersMapper {
      * @param account アカウント
      * @return ユーザーレコード
      */
-    Optional<UsersEntity> selectByAccount(String account);
+    Optional<UsersEntity> selectByAccount(final String account);
 
     /**
      * ユーザーを挿入する
@@ -32,7 +32,7 @@ public interface UsersMapper {
      * @param user 挿入するユーザーレコード
      * @return 挿入されたユーザーレコード
      */
-    UsersEntity insert(UsersEntity user);
+    UsersEntity insert(final UsersEntity user);
 
     /**
      * ユーザーを全件取得する
