@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 共通機能 コントローラークラス
+ * 複数の機能で共通して利用されるAPIエンドポイントを提供するコントローラークラスです。
  */
 @RestController
 @RequestMapping("/common")
@@ -19,15 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommonController {
 
     /**
-     * 共通機能 サービスクラス
+     * 共通機能に関連するビジネスロジックを処理するサービスクラスです。
      */
     private final CommonService commonService;
 
     /**
-     * ログインユーザー情報を取得する
+     * 現在ログインしているユーザーの情報を取得します。
      *
-     * @param loginUser ログインユーザー情報 (JWT の認可処理で取得)
-     * @return ログインユーザー情報
+     * @param loginUser 認証インターセプターによってリクエスト属性に設定されたログインユーザーのエンティティ。
+     * @return クライアントに返すためのログインユーザー情報（アカウント、名前、ロール）。
      */
     @GetMapping("/loginUser")
     public GetLoginUserResponse getLoginUser(@RequestAttribute("user") final UsersEntity loginUser) {
@@ -35,11 +35,11 @@ public class CommonController {
     }
 
     /**
-     * ログアウト処理を行う
+     * ユーザーのログアウト処理を実行し、関連するリフレッシュトークンを無効化します。
      *
-     * @param request リクエスト
-     * @param loginUser ログインユーザー情報 (JWT の認可処理で取得)
-     * @throws Exception
+     * @param request   無効化するリフレッシュトークンを含むリクエストボディ。
+     * @param loginUser 認証インターセプターによってリクエスト属性に設定されたログインユーザーのエンティティ。
+     * @throws Exception ログアウト処理中に例外が発生した場合。
      */
     @PostMapping("/logout")
     public void postLogout(
@@ -51,11 +51,17 @@ public class CommonController {
 }
 
 /**
- * ログインユーザー レスポンスモデル
+ * ログインユーザー情報取得APIのレスポンスボディを表すレコードクラスです。
+ *
+ * @param account アカウント名
+ * @param name    ユーザー名
+ * @param role    役割
  */
 record GetLoginUserResponse(String account, String name, Role role) {}
 
 /**
- * ログアウトAPI リクエストモデル
+ * ログアウトAPIへのリクエストボディを表すレコードクラスです。
+ *
+ * @param refreshToken リフレッシュトークン
  */
 record LogoutRequest(String refreshToken) {}

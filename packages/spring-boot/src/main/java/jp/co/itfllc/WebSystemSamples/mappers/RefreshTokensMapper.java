@@ -5,49 +5,49 @@ import jp.co.itfllc.WebSystemSamples.mappers.results.entities.RefreshTokensEntit
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * リフレッシュトークン情報を管理するテーブル向け Mapper
+ * `refresh_tokens` テーブルへのデータアクセスを提供するMyBatisのマッパーインターフェースです。
  */
 @Mapper
 public interface RefreshTokensMapper {
     /**
-     * リフレッシュトークン情報を挿入する
+     * 新しいリフレッシュトークンをデータベースに保存します。
      *
-     * @param refreshTokens 挿入するリフレッシュトークンレコード
-     * @return 挿入されたリフレッシュトークンレコード
+     * @param refreshTokens 保存するリフレッシュトークンのエンティティオブジェクト。
+     * @return 保存されたリフレッシュトークンのエンティティオブジェクト。
      */
     RefreshTokensEntity insert(final RefreshTokensEntity refreshTokens);
 
     /**
-     * リフレッシュトークン情報を取得する
+     * ハッシュ化されたトークンに一致するリフレッシュトークンをデータベースから検索します。
      *
-     * @param hashedToken ハッシュ化されたトークン
-     * @return リフレッシュトークン情報
+     * @param hashedToken 検索対象のハッシュ化されたリフレッシュトークン。
+     * @return 見つかったリフレッシュトークンのエンティティオブジェクト。見つからない場合は `Optional.empty`。
      */
     Optional<RefreshTokensEntity> selectByHashedToken(final byte[] hashedToken);
 
     /**
-     * リフレッシュトークン情報を失効済みにする
+     * 指定されたハッシュ化トークンに一致するリフレッシュトークンを失効させます。
      *
-     * @param hashedToken ハッシュ化されたトークン
+     * @param hashedToken 失効させるリフレッシュトークンのハッシュ値。
      */
     void revokeByHashedToken(final byte[] hashedToken);
 
     /**
-     * ユーザーに紐づくリフレッシュトークンを全て失効済みにする
+     * 指定されたユーザーIDに関連するすべてのリフレッシュトークンを失効させます。
      *
-     * @param usersId ユーザーID
+     * @param usersId 対象ユーザーのID。
      */
     void revokeAllByUsersId(final String usersId);
 
     /**
-     * リフレッシュトークンを削除する
+     * 指定されたハッシュ化トークンに一致するリフレッシュトークンをデータベースから削除します。
      *
-     * @param hashedToken ハッシュ化されたトークン
+     * @param hashedToken 削除するリフレッシュトークンのハッシュ値。
      */
     void deleteByHashedToken(final byte[] hashedToken);
 
     /**
-     * 有効期限切れのリフレッシュトークンを削除する
+     * 有効期限が切れたすべてのリフレッシュトークンをデータベースから削除します。
      */
     void deleteExpiredTokens();
 }

@@ -15,30 +15,31 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
- * 認証インターセプター
+ * APIリクエストの認証を処理するインターセプターです。
+ * AuthorizationヘッダーからJWTを検証し、有効なユーザー情報をリクエスト属性に設定します。
  */
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
     /**
-     * JWTユーティリティクラス
+     * JWTの検証やクレーム抽出を行うためのユーティリティクラスです。
      */
     private final JwtUtils jwtUtils;
 
     /**
-     * ユーザーテーブル向け Mapper
+     * ユーザー情報をデータベースから取得するためのMyBatisのマッパーです。
      */
     private final UsersMapper usersMapper;
 
     /**
-     * リクエストのプリハンドリングを行います。
+     * コントローラーメソッドが実行される前にリクエストを捕捉し、JWTの検証とユーザー認証を行います。
      *
-     * @param request  HTTPリクエスト
-     * @param response HTTPレスポンス
-     * @param handler  ハンドラー
-     * @return 処理を続行するかどうか
-     * @throws Exception 例外
+     * @param request  現在のHTTPリクエスト。
+     * @param response 現在のHTTPレスポンス。
+     * @param handler  処理を担当するハンドラー。
+     * @return 認証が成功した場合は {@code true} を返し、処理を続行させます。失敗した場合は例外がスローされます。
+     * @throws Exception 認証トークンが無効、またはユーザー検証に失敗した場合。
      */
     @Override
     public boolean preHandle(

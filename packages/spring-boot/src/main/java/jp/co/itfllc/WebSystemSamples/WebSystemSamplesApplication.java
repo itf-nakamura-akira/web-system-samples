@@ -5,16 +5,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * Web System Samples クラス
+ * Spring Bootアプリケーションのエントリーポイントとなるメインクラスです。
  */
 @EnableScheduling
 @SpringBootApplication
 public class WebSystemSamplesApplication {
 
     /**
-     * エントリーポイント
+     * アプリケーションを起動するメインメソッドです。
      *
-     * @param args 起動引数
+     * @param args コマンドライン引数
      */
     public static void main(final String[] args) {
         SpringApplication.run(WebSystemSamplesApplication.class, args);

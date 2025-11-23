@@ -6,38 +6,38 @@ import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * ユーザーテーブル向け Mapper
+ * `users` テーブルへのデータアクセスを提供するMyBatisのマッパーインターフェースです。
  */
 @Mapper
 public interface UsersMapper {
     /**
-     * IDでユーザーを取得する
+     * 指定されたIDに一致するユーザーをデータベースから検索します。
      *
-     * @param id ID
-     * @return ユーザーレコード
+     * @param id 検索対象のユーザーID。
+     * @return 見つかったユーザーのエンティティオブジェクト。見つからない場合は `Optional.empty`。
      */
     Optional<UsersEntity> selectById(final String id);
 
     /**
-     * アカウントでユーザーを取得する
+     * 指定されたアカウント名に一致するユーザーをデータベースから検索します。
      *
-     * @param account アカウント
-     * @return ユーザーレコード
+     * @param account 検索対象のアカウント名。
+     * @return 見つかったユーザーのエンティティオブジェクト。見つからない場合は `Optional.empty`。
      */
     Optional<UsersEntity> selectByAccount(final String account);
 
     /**
-     * ユーザーを挿入する
+     * 新しいユーザーをデータベースに保存します。
      *
-     * @param user 挿入するユーザーレコード
-     * @return 挿入されたユーザーレコード
+     * @param user 保存するユーザーのエンティティオブジェクト。
+     * @return 保存されたユーザーのエンティティオブジェクト。
      */
     UsersEntity insert(final UsersEntity user);
 
     /**
-     * ユーザーを全件取得する
+     * データベースに登録されている全てのユーザーを取得します。
      *
-     * @return ユーザーレコードのリスト
+     * @return 全ユーザーのリスト。見つからない場合は空のリスト。
      */
     List<UsersEntity> selectList();
 }

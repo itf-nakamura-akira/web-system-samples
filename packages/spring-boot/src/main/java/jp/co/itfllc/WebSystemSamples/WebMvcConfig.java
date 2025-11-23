@@ -9,28 +9,29 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Web MVC 設定クラス
+ * Spring Web MVCのカスタマイズ設定を行うための構成クラスです。
  */
 @Configuration
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
     /**
-     * 認証インターセプター
+     * リクエストの認証を処理するインターセプターです。
      */
     @NonNull
     private final AuthInterceptor authInterceptor;
 
     /**
-     * 管理者権限チェックインターセプター
+     * 管理者権限を要求するエンドポイントへのアクセスを制御するインターセプターです。
      */
     @NonNull
     private final AdminInterceptor adminInterceptor;
 
     /**
-     * インターセプターを追加します。
+     * アプリケーションにインターセプターを登録します。
+     * ここでは、認証チェックと管理者権限チェックのインターセプターを特定のエンドポイントに適用しています。
      *
-     * @param registry インターセプターレジストリ
+     * @param registry インターセプターを登録するためのレジストリ。
      */
     @Override
     public void addInterceptors(@NonNull final InterceptorRegistry registry) {

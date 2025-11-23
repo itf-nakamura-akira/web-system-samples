@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * ログイン画面 コントローラークラス
+ * 認証関連のAPIエンドポイントを提供するコントローラークラスです。
  */
 @RestController
 @RequestMapping("/login")
@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     /**
-     * ログイン画面 サービスクラス
+     * 認証ロジックを処理するサービスクラスです。
      */
     private final LoginService loginService;
 
     /**
-     * ログイン認証
+     * ユーザーのログイン認証を行い、認証トークンを返却します。
      *
-     * @param request リクエスト
-     * @return JWT
+     * @param request ログイン情報（アカウントとパスワード）を含むリクエストボディ。
+     * @return 認証トークン（アクセストークンとリフレッシュトークン）を含むレスポンス。
      * @throws Exception
      */
     @PostMapping
@@ -34,10 +34,10 @@ public class LoginController {
     }
 
     /**
-     * アクセストークンをリフレッシュします
+     * リフレッシュトークンを使用して、新しい認証トークンを取得します。
      *
-     * @param request リクエスト
-     * @return JWT
+     * @param request リフレッシュトークンを含むリクエストボディ。
+     * @return 新しい認証トークン（アクセストークンとリフレッシュトークン）を含むレスポンス。
      * @throws Exception
      */
     @PostMapping("/refresh")
@@ -49,16 +49,24 @@ public class LoginController {
 }
 
 /**
- * ログイン認証 リクエストモデル
+ * ログインAPIへのリクエストボディを表すレコードクラスです。
+ *
+ * @param account  アカウント名
+ * @param password パスワード
  */
 record LoginRequest(String account, String password) {}
 
 /**
- * リフレッシュAPI リクエストモデル
+ * トークンリフレッシュAPIへのリクエストボディを表すレコードクラスです。
+ *
+ * @param refreshToken リフレッシュトークン
  */
 record RefreshRequest(String refreshToken) {}
 
 /**
- * 認証トークン レスポンスモデル
+ * 認証APIのレスポンスボディを表すレコードクラスです。
+ *
+ * @param accessToken  アクセストークン
+ * @param refreshToken リフレッシュトークン
  */
 record AuthTokenResponse(String accessToken, String refreshToken) {}

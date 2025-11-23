@@ -11,19 +11,20 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
- * 管理者権限チェックインターセプター
+ * 特定のエンドポイントへのアクセスを管理者（Adminロール）を持つユーザーに限定するためのインターセプターです。
+ * このインターセプターは {@code AuthInterceptor} の後に実行されることを想定しています。
  */
 @Component
 public class AdminInterceptor implements HandlerInterceptor {
 
     /**
-     * リクエストのプリハンドリングを行います。
+     * コントローラーメソッドが実行される前に、リクエストを横取りして管理者権限のチェックを行います。
      *
-     * @param request  HTTPリクエスト
-     * @param response HTTPレスポンス
-     * @param handler  ハンドラー
-     * @return 処理を続行するかどうか
-     * @throws Exception 例外
+     * @param request  現在のHTTPリクエスト。
+     * @param response 現在のHTTPレスポンス。
+     * @param handler  処理を担当するハンドラー（通常はコントローラーメソッド）。
+     * @return ユーザーが管理者であれば {@code true} を返し、処理を続行させます。それ以外の場合は例外がスローされます。
+     * @throws Exception 認可に失敗した場合、または予期せぬエラーが発生した場合。
      */
     @Override
     public boolean preHandle(

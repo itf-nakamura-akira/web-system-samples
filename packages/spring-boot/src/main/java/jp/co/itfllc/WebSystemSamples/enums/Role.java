@@ -1,16 +1,16 @@
 package jp.co.itfllc.WebSystemSamples.enums;
 
 /**
- * 機能(画面・API)の使用権限に関わるロール
+ * ユーザーの権限レベルを定義する列挙型です。
  */
 public enum Role {
     /**
-     * 管理者
+     * 全機能へのアクセス権を持つ管理者ロール。
      */
     Admin,
 
     /**
-     * 一般
+     * 一般的な操作のみが許可される通常ユーザーロール。
      */
     Common,
 }

@@ -11,17 +11,18 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * グローバル例外ハンドラークラス
+ * アプリケーション全体で発生する例外を横断的に処理するためのアドバイスクラスです。
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
-     * ResponseStatusExceptionを処理します。
+     * {@code ResponseStatusException} 型の例外を処理します。
+     * この例外は、特定のHTTPステータスコードとエラーメッセージをクライアントに返すために使用されます。
      *
-     * @param ex 発生した例外
-     * @param request 現在のリクエスト
-     * @return エラーレスポンス
+     * @param ex      捕捉された {@code ResponseStatusException} インスタンス。
+     * @param request 現在のリクエストコンテキスト。
+     * @return エラー情報を含む {@code ResponseEntity} オブジェクト。
      */
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Object> handleResponseStatusException(
@@ -37,11 +38,12 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * キャッチされなかったすべての例外を処理します。
+     * 他のハンドラーで捕捉されなかったすべての {@code Exception} 型の例外を処理します。
+     * 予期せぬサーバーエラーとして扱われます。
      *
-     * @param ex 発生した例外
-     * @param request 現在のリクエスト
-     * @return エラーレスポンス
+     * @param ex      捕捉された {@code Exception} インスタンス。
+     * @param request 現在のリクエストコンテキスト。
+     * @return 固定のエラーメッセージとHTTP 500ステータスを含む {@code ResponseEntity} オブジェクト。
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllUncaughtException(final Exception ex, final WebRequest request) {

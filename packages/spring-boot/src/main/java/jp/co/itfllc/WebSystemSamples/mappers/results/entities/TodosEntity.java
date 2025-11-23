@@ -5,53 +5,53 @@ import java.time.OffsetDateTime;
 import lombok.Data;
 
 /**
- * TODOテーブル
+ * `todos` テーブルのレコードを表すエンティティクラスです。
  */
 @Data
 public class TodosEntity {
 
     /**
-     * ID
+     * 主キーとなるTODOのID。
      */
     private String id;
 
     /**
-     * 作成者ID
+     * このTODO項目を作成したユーザーのID。
      */
     private String creatorId;
 
     /**
-     * 担当者ID
+     * このTODO項目の担当者のユーザーID。
      */
     private String assigneeId;
 
     /**
-     * TODOのタイトル
+     * TODOの内容を簡潔に表すタイトル。
      */
     private String title;
 
     /**
-     * メモ
+     * TODOに関する詳細な情報やメモ。
      */
     private String memo;
 
     /**
-     * 期限日
+     * TODOの完了期限日。
      */
     private LocalDate dueDate;
 
     /**
-     * 完了日時
+     * TODOが完了した日時。未完了の場合は {@code null}。
      */
     private OffsetDateTime completedAt;
 
     /**
-     * 作成日時
+     * このレコードが作成された日時。
      */
     private OffsetDateTime createdAt;
 
     /**
-     * 更新日時
+     * このレコードが最後に更新された日時。
      */
     private OffsetDateTime updatedAt;
 }

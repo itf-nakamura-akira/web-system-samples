@@ -5,38 +5,38 @@ import jp.co.itfllc.WebSystemSamples.enums.Role;
 import lombok.Data;
 
 /**
- * ユーザーテーブル
+ * `users` テーブルのレコードを表すエンティティクラスです。
  */
 @Data
 public class UsersEntity {
 
     /**
-     * ID
+     * 主キーとなるユーザーID。
      */
     private String id;
 
     /**
-     * アカウント名
+     * ログイン時に使用される一意のアカウント名。
      */
     private String account;
 
     /**
-     * ハッシュ化済みパスワード
+     * Argon2でハッシュ化されたパスワード。
      */
     private String hashedPassword;
 
     /**
-     * 表示名
+     * 画面に表示されるユーザーの名前。
      */
     private String name;
 
     /**
-     * 無効化日時
+     * ユーザーアカウントが無効化された日時。有効な場合は {@code null}。
      */
     private OffsetDateTime disabledAt;
 
     /**
-     * 機能(画面・API)の使用権限に関わるロール
+     * ユーザーの権限レベルを示す役割（ロール）。
      */
     private Role role;
 }

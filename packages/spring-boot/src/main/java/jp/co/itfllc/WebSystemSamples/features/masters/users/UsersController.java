@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * ユーザー管理機能 コントローラークラス
+ * ユーザーマスター管理機能に関するAPIエンドポイントを提供するコントローラークラスです。
  */
 @RestController
 @RequestMapping("/masters/users")
@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsersController {
 
     /**
-     * ユーザー管理機能 サービスクラス
+     * ユーザー管理に関連するビジネスロジックを処理するサービスクラスです。
      */
     private final UsersService usersService;
 
     /**
-     * ユーザーを全件取得する
+     * 登録されているすべてのユーザー情報を取得します。
      *
-     * @return ユーザーレコードのリスト
+     * @return 全ユーザーの情報を含むレスポンスオブジェクト。
      */
     @GetMapping
     public GetListResponse getList() {
@@ -43,11 +43,19 @@ public class UsersController {
 }
 
 /**
- * ユーザーを全件取得 レスポンスモデル
+ * ユーザー一覧取得APIのレスポンスボディを表すレコードクラスです。
+ *
+ * @param users ユーザー情報のリスト
  */
 record GetListResponse(List<Users> users) {}
 
 /**
- * ユーザー レスポンスモデル
+ * レスポンスに含める個々のユーザー情報を表すレコードクラスです。
+ *
+ * @param id         ユーザーID
+ * @param account    アカウント名
+ * @param name       ユーザー名
+ * @param disabledAt 無効化された日時
+ * @param role       役割
  */
 record Users(String id, String account, String name, OffsetDateTime disabledAt, Role role) {}

@@ -7,21 +7,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- * ユーザー管理機能 サービスクラス
+ * ユーザーマスター管理に関連するビジネスロジックを処理するサービスクラスです。
  */
 @Service
 @RequiredArgsConstructor
 public class UsersService {
 
     /**
-     * ユーザーテーブル向け Mapper
+     * `users` テーブルへのデータアクセスを提供するMyBatisのマッパーです。
      */
     private final UsersMapper usersMapper;
 
     /**
-     * ユーザーを全件取得する
+     * 登録されているすべてのユーザー情報を取得します。
      *
-     * @return ユーザーレコードのリスト
+     * @return 全ユーザーのエンティティリスト。見つからない場合は空のリスト。
      */
     public List<UsersEntity> getList() {
         return this.usersMapper.selectList();

@@ -15,34 +15,34 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * ログイン画面 サービスクラス
+ * 認証関連のビジネスロジックを処理するサービスクラスです。
  */
 @Service
 @RequiredArgsConstructor
 public class LoginService {
 
     /**
-     * JWTユーティリティクラス
+     * JWT（JSON Web Token）の生成や検証を行うユーティリティクラスです。
      */
     private final JwtUtils jwtUtils;
 
     /**
-     * ユーザーテーブル向け Mapper
+     * `users` テーブルへのデータアクセスを提供するMyBatisのマッパーです。
      */
     private final UsersMapper usersMapper;
 
     /**
-     * JWT(リフレッシュトークン)を管理するテーブル向け Mapper
+     * `refresh_tokens` テーブルへのデータアクセスを提供するMyBatisのマッパーです。
      */
     private final RefreshTokensMapper refreshTokensMapper;
 
     /**
-     * ログイン処理を行う
+     * ユーザーの認証を行い、成功した場合はアクセストークンとリフレッシュトークンを生成します。
      *
-     * @param account アカウント
-     * @param password パスワード
-     * @return ログインユーザー
-     * @throws Exception
+     * @param account  ユーザーのアカウント名。
+     * @param password ユーザーのパスワード。
+     * @return 生成されたアクセストークンとリフレッシュトークンを含む `Tokens` オブジェクト。
+     * @throws Exception 認証失敗時やトークン生成時に発生する可能性のある例外。
      */
     public Tokens login(final String account, final String password) throws Exception {
         final Optional<UsersEntity> user = this.usersMapper.selectByAccount(account);
@@ -69,11 +69,11 @@ public class LoginService {
     }
 
     /**
-     * トークンをリフレッシュする
+     * 指定されたリフレッシュトークンを検証し、新しいアクセストークンとリフレッシュトークンを生成します。
      *
-     * @param refreshToken リフレッシュトークン
-     * @return 新しいアクセストークンとリフレッシュトークン
-     * @throws Exception
+     * @param refreshToken 更新に使用するリフレッシュトークン。
+     * @return 新しく生成されたアクセストークンとリフレッシュトークンを含む `Tokens` オブジェクト。
+     * @throws Exception トークンの検証失敗時や再生成時に発生する可能性のある例外。
      */
     public Tokens refreshTokens(final String refreshToken) throws Exception {
         // リフレッシュトークンをハッシュ化する
@@ -130,6 +130,9 @@ public class LoginService {
 }
 
 /**
- * 認証トークン
+ * アクセストークンとリフレッシュトークンを保持するレコードクラスです。
+ *
+ * @param accessToken  JWTアクセストークン
+ * @param refreshToken JWTリフレッシュトークン
  */
 record Tokens(String accessToken, String refreshToken) {}

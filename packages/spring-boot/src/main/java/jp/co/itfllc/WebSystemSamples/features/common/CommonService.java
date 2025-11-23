@@ -9,28 +9,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
- * 共通機能 サービスクラス
+ * 複数の機能で共通して利用されるビジネスロジックを処理するサービスクラスです。
  */
 @Service
 @RequiredArgsConstructor
 public class CommonService {
 
     /**
-     * JWTユーティリティクラス
+     * JWTのハッシュ化など、関連操作を行うためのユーティリティクラスです。
      */
     private final JwtUtils jwtUtils;
 
     /**
-     * JWT(リフレッシュトークン)を管理するテーブル向け Mapper
+     * `refresh_tokens` テーブルへのデータアクセスを提供するMyBatisのマッパーです。
      */
     private final RefreshTokensMapper refreshTokensMapper;
 
     /**
-     * ログアウト処理を行う
+     * ユーザーのログアウト処理を行い、指定されたリフレッシュトークンをデータベースから削除します。
      *
-     * @param refreshToken リフレッシュトークン
-     * @param loginUser ログインユーザー情報
-     * @throws Exception
+     * @param refreshToken 削除対象のリフレッシュトークン。
+     * @param loginUser    現在ログインしているユーザーのエンティティ。
+     * @throws Exception リフレッシュトークンのハッシュ化で例外が発生した場合。
      */
     public void logout(final String refreshToken, final UsersEntity loginUser) throws Exception {
         // リフレッシュトークンをハッシュ化する

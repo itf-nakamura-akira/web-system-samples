@@ -4,38 +4,38 @@ import java.time.OffsetDateTime;
 import lombok.Data;
 
 /**
- * リフレッシュトークン情報を管理するテーブル
+ * `refresh_tokens` テーブルのレコードを表すエンティティクラスです。
  */
 @Data
 public class RefreshTokensEntity {
 
     /**
-     * ID
+     * 主キーとなるID。
      */
     private String id;
 
     /**
-     * ユーザーテーブルID
+     * このリフレッシュトークンを発行したユーザーのID。
      */
     private String usersId;
 
     /**
-     * ハッシュ化済みリフレッシュトークン
+     * SHA-512でハッシュ化されたリフレッシュトークン。
      */
     private byte[] hashedToken;
 
     /**
-     * 発行日時
+     * このトークンが発行された日時。
      */
     private OffsetDateTime createdAt;
 
     /**
-     * 失効日時
+     * このトークンの有効期限が切れる日時。
      */
     private OffsetDateTime expiresAt;
 
     /**
-     * 失効フラグ
+     * このトークンが失効しているかどうかを示すフラグ。
      */
     private Boolean revoked;
 }

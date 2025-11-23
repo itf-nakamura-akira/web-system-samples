@@ -6,20 +6,20 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 /**
- * Cron 処理を行う Service クラス
+ * 定期的なバッチ処理（Cronジョブ）を管理するサービスクラスです。
  */
 @Service
 @RequiredArgsConstructor
 public class CronService {
 
     /**
-     * リフレッシュトークン情報を管理するテーブル向け Mapper
+     * `refresh_tokens` テーブルへのアクセスを提供するMyBatisのマッパーです。
      */
     private final RefreshTokensMapper refreshTokensMapper;
 
     /**
-     * 古いリフレッシュトークンを削除する
-     * 毎日日本時間午前3時に実行
+     * 有効期限が切れたリフレッシュトークンをデータベースから削除します。
+     * この処理は、毎日日本時間午前3時に自動的に実行されます。
      */
     @Scheduled(cron = "0 0 3 * * *", zone = "Asia/Tokyo")
     public void deleteExpiredRefreshTokens() {
