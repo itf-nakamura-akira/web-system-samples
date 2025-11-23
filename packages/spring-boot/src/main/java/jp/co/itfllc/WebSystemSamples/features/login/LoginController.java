@@ -1,6 +1,13 @@
 package jp.co.itfllc.WebSystemSamples.features.login;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.constraints.NotBlank;
+import jp.co.itfllc.WebSystemSamples.advices.ErrorResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,54 +26,84 @@ public class LoginController {
      */
     private final LoginService loginService;
 
-    /**
-     * ユーザーのログイン認証を行い、認証トークンを返却します。
-     *
-     * @param request ログイン情報（アカウントとパスワード）を含むリクエストボディ。
-     * @return 認証トークン（アクセストークンとリフレッシュトークン）を含むレスポンス。
-     * @throws Exception
-     */
+    @Operation(
+        summary = "ログインAPI",
+        description = "ユーザーのログイン認証を行い、認証トークンを返却します。",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "ログイン成功時",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = AuthTokenResponse.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "アカウントまたはパスワードが誤っている時",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class)
+                )
+            ),
+        }
+    )
     @PostMapping
-    public AuthTokenResponse postLogin(@RequestBody final LoginRequest request) throws Exception {
+    public AuthTokenResponse postLogin(@RequestBody @Validated final LoginRequest request) throws Exception {
         final Tokens tokens = this.loginService.login(request.account(), request.password());
 
         return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());
     }
 
-    /**
-     * リフレッシュトークンを使用して、新しい認証トークンを取得します。
-     *
-     * @param request リフレッシュトークンを含むリクエストボディ。
-     * @return 新しい認証トークン（アクセストークンとリフレッシュトークン）を含むレスポンス。
-     * @throws Exception
-     */
+    @Operation(
+        summary = "トークンリフレッシュAPI",
+        description = "リフレッシュトークンを使用して、新しい認証トークンを取得します。",
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "リフレッシュ成功時",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = AuthTokenResponse.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "リフレッシュトークンが無効、または有効期限切れの場合",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorResponse.class)
+                )
+            ),
+        }
+    )
     @PostMapping("/refresh")
-    public AuthTokenResponse postRefresh(@RequestBody final RefreshRequest request) throws Exception {
+    public AuthTokenResponse postRefresh(@RequestBody @Validated final RefreshRequest request) throws Exception {
         final Tokens tokens = this.loginService.refreshTokens(request.refreshToken());
 
         return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());
     }
 }
 
-/**
- * ログインAPIへのリクエストボディを表すレコードクラスです。
- *
- * @param account  アカウント名
- * @param password パスワード
- */
-record LoginRequest(String account, String password) {}
+@Schema(description = "ログインAPIのリクエストボディ")
+record LoginRequest(
+    @Schema(description = "アカウント名", example = "nakamura.akira")
+    @NotBlank(message = "アカウント名が入力されていません。")
+    String account,
+    @Schema(description = "パスワード", example = "password")
+    @NotBlank(message = "パスワードが入力されていません。")
+    String password
+) {}
 
-/**
- * トークンリフレッシュAPIへのリクエストボディを表すレコードクラスです。
- *
- * @param refreshToken リフレッシュトークン
- */
-record RefreshRequest(String refreshToken) {}
+@Schema(description = "トークンリフレッシュAPIのリクエストボディ")
+record RefreshRequest(
+    @Schema(description = "リフレッシュトークン", example = "2OblN1pZsfztw52D4AhXYp7wvvfnuJuJ...")
+    @NotBlank(message = "リフレッシュトークンが入力されていません。")
+    String refreshToken
+) {}
 
-/**
- * 認証APIのレスポンスボディを表すレコードクラスです。
- *
- * @param accessToken  アクセストークン
- * @param refreshToken リフレッシュトークン
- */
-record AuthTokenResponse(String accessToken, String refreshToken) {}
+@Schema(description = "認証トークンレスポンス")
+record AuthTokenResponse(
+    @Schema(description = "アクセストークン", example = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJp...") String accessToken,
+    @Schema(description = "リフレッシュトークン", example = "2OblN1pZsfztw52D4AhXYp7wvvfnuJuJ...") String refreshToken
+) {}
