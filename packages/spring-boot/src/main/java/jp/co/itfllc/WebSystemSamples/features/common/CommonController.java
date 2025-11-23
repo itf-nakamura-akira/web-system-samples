@@ -4,7 +4,9 @@ import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,9 +33,27 @@ public class CommonController {
     public GetLoginUserResponse getLoginUser(@RequestAttribute("user") UsersEntity loginUser) {
         return new GetLoginUserResponse(loginUser.getAccount(), loginUser.getName(), loginUser.getRole());
     }
+
+    /**
+     * ログアウト処理を行う
+     *
+     * @param request リクエスト
+     * @param loginUser ログインユーザー情報 (JWT の認可処理で取得)
+     * @throws Exception
+     */
+    @PostMapping("/logout")
+    public void postLogout(@RequestBody LogoutRequest request, @RequestAttribute("user") UsersEntity loginUser)
+        throws Exception {
+        this.commonService.logout(request.refreshToken(), loginUser);
+    }
 }
 
 /**
  * ログインユーザー レスポンスモデル
  */
 record GetLoginUserResponse(String account, String name, Role role) {}
+
+/**
+ * ログアウトAPI リクエストモデル
+ */
+record LogoutRequest(String refreshToken) {}

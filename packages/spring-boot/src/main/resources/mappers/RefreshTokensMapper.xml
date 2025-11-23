@@ -36,4 +36,12 @@
         WHERE
             users_id = #{usersId}::uuid;
     </update>
+
+    <delete id="deleteByHashedToken">
+        DELETE
+        FROM
+            refresh_tokens
+        WHERE
+            hashed_token = #{hashedToken};
+    </delete>
 </mapper>

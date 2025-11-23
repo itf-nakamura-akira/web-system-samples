@@ -38,4 +38,11 @@ public interface RefreshTokensMapper {
      * @param usersId ユーザーID
      */
     void revokeAllByUsersId(String usersId);
+
+    /**
+     * リフレッシュトークンを削除する
+     *
+     * @param hashedToken ハッシュ化されたトークン
+     */
+    void deleteByHashedToken(byte[] hashedToken);
 }
