@@ -5,7 +5,8 @@
         "gemini-cli": "gemini",
         "format:root": "prettier . --write",
         "format:database": "prettier ./packages/database/ --write --ignore-path ./packages/database/.prettierignore",
-        "format:spring-boot": "prettier ./packages/spring-boot/ --write --ignore-path ./packages/spring-boot/.prettierignore"
+        "format:spring-boot": "prettier ./packages/spring-boot/ --write --ignore-path ./packages/spring-boot/.prettierignore",
+        "format:angular": "prettier ./packages/angular/ --write --ignore-path ./packages/angular/.prettierignore"
     },
     "devDependencies": {
         "@prettier/plugin-xml": "^3.4.2",

@@ -28,3 +28,7 @@ RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.2"
 # Gemini CLI
 # https://github.com/google-gemini/gemini-cli
 RUN npm install -g @google/gemini-cli
+
+# Angular CLI
+# https://github.com/angular/angular-cli
+RUN npm install -g @angular/cli
