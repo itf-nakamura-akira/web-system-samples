@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.NotBlank;
+import jp.co.itfllc.WebSystemSamples.advices.ApiUnauthorizedResponse;
 import jp.co.itfllc.WebSystemSamples.advices.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -67,16 +68,9 @@ public class LoginController {
                     schema = @Schema(implementation = AuthTokenResponse.class)
                 )
             ),
-            @ApiResponse(
-                responseCode = "401",
-                description = "リフレッシュトークンが無効、または有効期限切れの場合",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ErrorResponse.class)
-                )
-            ),
         }
     )
+    @ApiUnauthorizedResponse
     @PostMapping("/refresh")
     public AuthTokenResponse postRefresh(@RequestBody @Validated final RefreshRequest request) throws Exception {
         final Tokens tokens = this.loginService.refreshTokens(request.refreshToken());

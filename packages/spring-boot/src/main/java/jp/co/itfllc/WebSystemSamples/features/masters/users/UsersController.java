@@ -6,7 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.time.OffsetDateTime;
 import java.util.List;
-import jp.co.itfllc.WebSystemSamples.advices.ErrorResponse;
+import jp.co.itfllc.WebSystemSamples.advices.ApiForbiddenResponse;
+import jp.co.itfllc.WebSystemSamples.advices.ApiUnauthorizedResponse;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import lombok.RequiredArgsConstructor;
@@ -39,24 +40,10 @@ public class UsersController {
                     schema = @Schema(implementation = UsersResponse.class)
                 )
             ),
-            @ApiResponse(
-                responseCode = "401",
-                description = "認証トークンが無効、または有効期限切れの場合",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ErrorResponse.class)
-                )
-            ),
-            @ApiResponse(
-                responseCode = "403",
-                description = "当APIの実行権限がない場合",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ErrorResponse.class)
-                )
-            ),
         }
     )
+    @ApiUnauthorizedResponse
+    @ApiForbiddenResponse
     @GetMapping
     public UsersResponse getList() {
         final List<UsersEntity> users = this.usersService.getList();

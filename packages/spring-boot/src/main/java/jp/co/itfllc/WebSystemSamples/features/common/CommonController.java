@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.NotBlank;
-import jp.co.itfllc.WebSystemSamples.advices.ErrorResponse;
+import jp.co.itfllc.WebSystemSamples.advices.ApiUnauthorizedResponse;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
 import lombok.RequiredArgsConstructor;
@@ -42,16 +42,9 @@ public class CommonController {
                     schema = @Schema(implementation = GetLoginUserResponse.class)
                 )
             ),
-            @ApiResponse(
-                responseCode = "401",
-                description = "認証トークンが無効、または有効期限切れの場合",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ErrorResponse.class)
-                )
-            ),
         }
     )
+    @ApiUnauthorizedResponse
     @GetMapping("/loginUser")
     public GetLoginUserResponse getLoginUser(@RequestAttribute("user") final UsersEntity loginUser) {
         return new GetLoginUserResponse(loginUser.getAccount(), loginUser.getName(), loginUser.getRole());
@@ -60,18 +53,9 @@ public class CommonController {
     @Operation(
         summary = "ログアウトAPI",
         description = "ユーザーのログアウト処理を実行し、関連するリフレッシュトークンを無効化します。",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "ログアウト成功時"),
-            @ApiResponse(
-                responseCode = "401",
-                description = "認証トークンが無効、または有効期限切れの場合",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = ErrorResponse.class)
-                )
-            ),
-        }
+        responses = { @ApiResponse(responseCode = "200", description = "ログアウト成功時") }
     )
+    @ApiUnauthorizedResponse
     @PostMapping("/logout")
     public void postLogout(
         @RequestBody @Validated final LogoutRequest request,
