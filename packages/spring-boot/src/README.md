@@ -20,6 +20,11 @@ src
     │       ├── enums
     │       │   └── Role.java                     # ユーザーロールのEnum
     │       ├── features
+    │       │   ├── common                        # 共通機能
+    │       │   │   ├── CommonController.java
+    │       │   │   └── CommonService.java
+    │       │   ├── cron                          # バッチ処理・定期実行機能
+    │       │   │   └── CronService.java
     │       │   ├── login                         # ログイン機能
     │       │   │   ├── LoginController.java
     │       │   │   └── LoginService.java
@@ -31,11 +36,13 @@ src
     │       │   ├── AdminInterceptor.java         # 管理者権限チェックインターセプター
     │       │   └── AuthInterceptor.java          # 認証インターセプター
     │       ├── mappers
+    │       │   ├── RefreshTokensMapper.java      # RefreshTokensテーブル(MyBatis)
     │       │   ├── TodosMapper.java              # Todosテーブル(MyBatis)
     │       │   ├── UsersMapper.java              # Usersテーブル(MyBatis)
     │       │   └── results
     │       │       ├── TodosResult.java
     │       │       └── entities
+    │       │           ├── RefreshTokensEntity.java
     │       │           ├── TodosEntity.java
     │       │           └── UsersEntity.java
     │       └── utils
@@ -44,6 +51,7 @@ src
     └── resources
         ├── application.properties              # アプリケーション設定
         ├── mappers
+        │   ├── RefreshTokensMapper.xml         # RefreshTokensMapperのSQL
         │   ├── TodosMapper.xml                 # TodosMapperのSQL
         │   └── UsersMapper.xml                 # UsersMapperのSQL
         └── META-INF
@@ -62,6 +70,15 @@ src
 - **`application.properties`**: アプリケーションの各種設定を定義するファイルです。データベース接続情報、MyBatisの設定、JWT関連の秘密鍵や有効期限などが環境変数経由で設定されています。
 
 ### 3. 機能 (Features)
+
+#### 共通機能 (`features/common`)
+
+- **`CommonController.java`**: 共通で利用するエンドポイントを定義します。ヘルスチェックなど、認証不要でアクセスできるAPIが含まれます。
+- **`CommonService.java`**: `CommonController`から呼び出され、共通機能のビジネスロジックを提供します。
+
+#### バッチ処理・定期実行機能 (`features/cron`)
+
+- **`CronService.java`**: `@Scheduled`アノテーションを使用して、定期的に実行されるバッチ処理やタスクを定義します。
 
 #### ログイン機能 (`features/login`)
 
@@ -82,12 +99,14 @@ src
 
 MyBatisを利用してデータベースにアクセスします。
 
+- **`RefreshTokensMapper.java` / `RefreshTokensMapper.xml`**: `refresh_tokens`テーブルへのCRUD操作を定義します。
 - **`UsersMapper.java` / `UsersMapper.xml`**: `users`テーブルへのCRUD操作を定義します。
 - **`TodosMapper.java` / `TodosMapper.xml`**: `todos`テーブルへの操作を定義します。
 
 ### 6. エンティティとEnum
 
 - **`UsersEntity.java`**: `users`テーブルのレコードに対応するJavaオブジェクトです。
+- **`RefreshTokensEntity.java`**: `refresh_tokens`テーブルのレコードに対応するJavaオブジェクトです。
 - **`TodosEntity.java`**: `todos`テーブルのレコードに対応するJavaオブジェクトです。
 - **`Role.java`**: `Admin`と`Common`の2つのユーザーロールを定義したEnumです。
 
