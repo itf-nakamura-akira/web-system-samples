@@ -26,6 +26,7 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
         COMMENT ON COLUMN public.refresh_tokens.revoked IS '失効フラグ';
         
         CREATE INDEX refresh_tokens_hashed_token_idx ON public.refresh_tokens (hashed_token) WHERE revoked = FALSE;
+        CREATE INDEX refresh_tokens_users_id_idx ON public.refresh_tokens (users_id);
     `);
 }
 

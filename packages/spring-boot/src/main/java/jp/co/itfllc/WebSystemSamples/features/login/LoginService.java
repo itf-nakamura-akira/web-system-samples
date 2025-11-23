@@ -1,5 +1,6 @@
 package jp.co.itfllc.WebSystemSamples.features.login;
 
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Optional;
 import jp.co.itfllc.WebSystemSamples.mappers.RefreshTokensMapper;
@@ -65,6 +66,65 @@ public class LoginService {
         this.refreshTokensMapper.insert(refreshTokens);
 
         return new Tokens(accessToken, refreshToken);
+    }
+
+    /**
+     * トークンをリフレッシュする
+     *
+     * @param refreshToken リフレッシュトークン
+     * @return 新しいアクセストークンとリフレッシュトークン
+     * @throws Exception
+     */
+    public Tokens refreshTokens(String refreshToken) throws Exception {
+        // リフレッシュトークンをハッシュ化する
+        byte[] hashedToken = this.jwtUtils.hashRefreshToken(refreshToken);
+
+        // リフレッシュトークンをDBから取得する
+        Optional<RefreshTokensEntity> token = this.refreshTokensMapper.selectByHashedToken(hashedToken);
+
+        // トークンが存在しない場合は、401エラーを返却します。
+        if (token.isEmpty()) {
+            throw new ResponseStatusException(
+                HttpStatus.UNAUTHORIZED,
+                "セッションが有効期限切れです。再ログインしてください。"
+            );
+        }
+
+        // トークンが失効済みの場合は、不正なリクエストとみなし、該当ユーザーのリフレッシュトークンを全て失効させます
+        if (token.get().getRevoked()) {
+            this.refreshTokensMapper.revokeAllByUsersId(token.get().getUsersId());
+
+            throw new ResponseStatusException(
+                HttpStatus.UNAUTHORIZED,
+                "セッションが有効期限切れです。再ログインしてください。"
+            );
+        }
+
+        // トークンが有効期限切れの場合は、401エラーを返却します。
+        if (token.get().getExpiresAt().isBefore(OffsetDateTime.now())) {
+            throw new ResponseStatusException(
+                HttpStatus.UNAUTHORIZED,
+                "セッションが有効期限切れです。再ログインしてください。"
+            );
+        }
+
+        // 古いリフレッシュトークンを失効済みにする
+        this.refreshTokensMapper.revokeByHashedToken(hashedToken);
+
+        // 新しいアクセストークンとリフレッシュトークンを生成する
+        String usersId = token.get().getUsersId();
+        String newAccessToken = this.jwtUtils.generateAccessToken(usersId, new HashMap<>());
+        String newRefreshToken = this.jwtUtils.generateRefreshToken();
+
+        // 新しいリフレッシュトークンをDBに登録する
+        var newRefreshTokens = new RefreshTokensEntity();
+        newRefreshTokens.setUsersId(usersId);
+        newRefreshTokens.setHashedToken(this.jwtUtils.hashRefreshToken(newRefreshToken));
+        newRefreshTokens.setExpiresAt(this.jwtUtils.getExpiresAt());
+
+        this.refreshTokensMapper.insert(newRefreshTokens);
+
+        return new Tokens(newAccessToken, newRefreshToken);
     }
 }
 

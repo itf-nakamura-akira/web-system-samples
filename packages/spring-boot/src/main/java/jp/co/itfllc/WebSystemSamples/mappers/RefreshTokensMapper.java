@@ -23,5 +23,19 @@ public interface RefreshTokensMapper {
      * @param hashedToken ハッシュ化されたトークン
      * @return リフレッシュトークン情報
      */
-    Optional<RefreshTokensEntity> selectByHashedToken(String hashedToken);
+    Optional<RefreshTokensEntity> selectByHashedToken(byte[] hashedToken);
+
+    /**
+     * リフレッシュトークン情報を失効済みにする
+     *
+     * @param hashedToken ハッシュ化されたトークン
+     */
+    void revokeByHashedToken(byte[] hashedToken);
+
+    /**
+     * ユーザーに紐づくリフレッシュトークンを全て失効済みにする
+     *
+     * @param usersId ユーザーID
+     */
+    void revokeAllByUsersId(String usersId);
 }

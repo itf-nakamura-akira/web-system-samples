@@ -27,19 +27,38 @@ public class LoginController {
      * @throws Exception
      */
     @PostMapping
-    public PostLoginResponse postLogin(@RequestBody PostLoginRequest request) throws Exception {
+    public AuthTokenResponse postLogin(@RequestBody LoginRequest request) throws Exception {
         Tokens tokens = this.loginService.login(request.account(), request.password());
 
-        return new PostLoginResponse(tokens.accessToken(), tokens.refreshToken());
+        return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());
+    }
+
+    /**
+     * アクセストークンをリフレッシュします
+     *
+     * @param request リクエスト
+     * @return JWT
+     * @throws Exception
+     */
+    @PostMapping("/refresh")
+    public AuthTokenResponse postRefresh(@RequestBody RefreshRequest request) throws Exception {
+        Tokens tokens = this.loginService.refreshTokens(request.refreshToken());
+
+        return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());
     }
 }
 
 /**
  * ログイン認証 リクエストモデル
  */
-record PostLoginRequest(String account, String password) {}
+record LoginRequest(String account, String password) {}
 
 /**
- * ログイン認証 レスポンスモデル
+ * リフレッシュAPI リクエストモデル
  */
-record PostLoginResponse(String accessToken, String refreshToken) {}
+record RefreshRequest(String refreshToken) {}
+
+/**
+ * 認証トークン レスポンスモデル
+ */
+record AuthTokenResponse(String accessToken, String refreshToken) {}
