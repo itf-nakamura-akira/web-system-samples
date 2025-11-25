@@ -45,7 +45,7 @@ public class UsersController {
     @ApiUnauthorizedResponse
     @ApiForbiddenResponse
     @GetMapping
-    public UsersResponse getList() {
+    public UsersResponse getMastersUsers() {
         final List<UsersEntity> users = this.usersService.getList();
 
         return new UsersResponse(

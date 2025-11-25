@@ -59,7 +59,7 @@ public class LoginController {
         }
     )
     @PostMapping
-    public AuthTokenResponse postLogin(@RequestBody @Validated final LoginRequest request) throws Exception {
+    public AuthTokenResponse login(@RequestBody @Validated final LoginRequest request) throws Exception {
         final Tokens tokens = this.loginService.login(request.account(), request.password());
 
         return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());
@@ -81,7 +81,7 @@ public class LoginController {
     )
     @ApiUnauthorizedResponse
     @PostMapping("/refresh")
-    public AuthTokenResponse postRefresh(@RequestBody @Validated final RefreshRequest request) throws Exception {
+    public AuthTokenResponse refreshAuthToken(@RequestBody @Validated final RefreshRequest request) throws Exception {
         final Tokens tokens = this.loginService.refreshTokens(request.refreshToken());
 
         return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());

@@ -57,7 +57,7 @@ public class CommonController {
     )
     @ApiUnauthorizedResponse
     @PostMapping("/logout")
-    public void postLogout(
+    public void logout(
         @RequestBody @Validated final LogoutRequest request,
         @RequestAttribute("user") final UsersEntity loginUser
     ) throws Exception {
