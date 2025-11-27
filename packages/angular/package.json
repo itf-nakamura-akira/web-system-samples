@@ -6,6 +6,7 @@
         "prestart": "orval --watch &",
         "build": "ng build",
         "prebuild": "orval --config ./orval.config.prod.ts",
+        "postbuild": "orval",
         "test": "ng test",
         "lint": "ng lint"
     },
