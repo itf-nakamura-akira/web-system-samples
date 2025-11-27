@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jp.co.itfllc.WebSystemSamples.advices.ApiUnauthorizedResponse;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
@@ -69,9 +70,9 @@ public class CommonController {
 
 @Schema(description = "ログインユーザー情報取得APIのレスポンス")
 record GetLoginUserResponse(
-    @Schema(description = "アカウント名") String account,
-    @Schema(description = "ユーザー名") String name,
-    @Schema(description = "役割") Role role
+    @Schema(description = "アカウント名") @NotNull String account,
+    @Schema(description = "ユーザー名") @NotNull String name,
+    @Schema(description = "役割") @NotNull Role role
 ) {}
 
 @Schema(description = "ログアウトAPIへのリクエスト")

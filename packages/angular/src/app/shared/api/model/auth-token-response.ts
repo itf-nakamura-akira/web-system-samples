@@ -11,7 +11,7 @@
  */
 export interface AuthTokenResponse {
     /** アクセストークン */
-    accessToken?: string;
+    accessToken: string;
     /** リフレッシュトークン */
-    refreshToken?: string;
+    refreshToken: string;
 }

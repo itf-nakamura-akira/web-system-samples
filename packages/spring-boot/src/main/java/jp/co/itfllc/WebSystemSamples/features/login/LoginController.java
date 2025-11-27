@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jp.co.itfllc.WebSystemSamples.advices.ApiUnauthorizedResponse;
 import jp.co.itfllc.WebSystemSamples.advices.ErrorResponse;
 import lombok.RequiredArgsConstructor;
@@ -109,6 +110,10 @@ record RefreshRequest(
 
 @Schema(description = "認証トークンレスポンス")
 record AuthTokenResponse(
-    @Schema(description = "アクセストークン", example = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJp...") String accessToken,
-    @Schema(description = "リフレッシュトークン", example = "2OblN1pZsfztw52D4AhXYp7wvvfnuJuJ...") String refreshToken
+    @Schema(description = "アクセストークン", example = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJp...")
+    @NotNull
+    String accessToken,
+    @Schema(description = "リフレッシュトークン", example = "2OblN1pZsfztw52D4AhXYp7wvvfnuJuJ...")
+    @NotNull
+    String refreshToken
 ) {}

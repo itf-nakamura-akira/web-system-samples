@@ -12,13 +12,13 @@ import type { UserRecordRole } from './user-record-role';
  */
 export interface UserRecord {
     /** ユーザーID */
-    id?: string;
+    id: string;
     /** アカウント名 */
-    account?: string;
+    account: string;
     /** ユーザー名 */
-    name?: string;
+    name: string;
     /** 無効化された日時 */
     disabledAt?: string;
     /** 役割 */
-    role?: UserRecordRole;
+    role: UserRecordRole;
 }

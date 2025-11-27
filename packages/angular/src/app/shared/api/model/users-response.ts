@@ -12,5 +12,5 @@ import type { UserRecord } from './user-record';
  */
 export interface UsersResponse {
     /** ユーザー情報のリスト */
-    users?: UserRecord[];
+    users: UserRecord[];
 }

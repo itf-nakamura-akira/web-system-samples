@@ -12,9 +12,9 @@ import type { GetLoginUserResponseRole } from './get-login-user-response-role';
  */
 export interface GetLoginUserResponse {
     /** アカウント名 */
-    account?: string;
+    account: string;
     /** ユーザー名 */
-    name?: string;
+    name: string;
     /** 役割 */
-    role?: GetLoginUserResponseRole;
+    role: GetLoginUserResponseRole;
 }
