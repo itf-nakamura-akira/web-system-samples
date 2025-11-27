@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jp.co.itfllc.WebSystemSamples.advices.ApiUnauthorizedResponse;
 import jp.co.itfllc.WebSystemSamples.enums.Role;
 import jp.co.itfllc.WebSystemSamples.mappers.results.entities.UsersEntity;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 複数の機能で共通して利用されるAPIエンドポイントを提供するコントローラークラスです。
  */
+@Tag(name = "common")
 @RestController
 @RequestMapping("/common")
 @RequiredArgsConstructor
@@ -57,7 +60,7 @@ public class CommonController {
     )
     @ApiUnauthorizedResponse
     @PostMapping("/logout")
-    public void postLogout(
+    public void logout(
         @RequestBody @Validated final LogoutRequest request,
         @RequestAttribute("user") final UsersEntity loginUser
     ) throws Exception {
@@ -67,9 +70,9 @@ public class CommonController {
 
 @Schema(description = "ログインユーザー情報取得APIのレスポンス")
 record GetLoginUserResponse(
-    @Schema(description = "アカウント名") String account,
-    @Schema(description = "ユーザー名") String name,
-    @Schema(description = "役割") Role role
+    @Schema(description = "アカウント名") @NotNull String account,
+    @Schema(description = "ユーザー名") @NotNull String name,
+    @Schema(description = "役割") @NotNull Role role
 ) {}
 
 @Schema(description = "ログアウトAPIへのリクエスト")

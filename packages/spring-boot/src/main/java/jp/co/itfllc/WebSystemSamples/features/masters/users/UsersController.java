@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.List;
 import jp.co.itfllc.WebSystemSamples.advices.ApiForbiddenResponse;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * ユーザーマスター管理機能に関するAPIエンドポイントを提供するコントローラークラスです。
  */
+@Tag(name = "masters-users")
 @RestController
 @RequestMapping("/masters/users")
 @RequiredArgsConstructor
@@ -45,7 +48,7 @@ public class UsersController {
     @ApiUnauthorizedResponse
     @ApiForbiddenResponse
     @GetMapping
-    public UsersResponse getList() {
+    public UsersResponse getMastersUsers() {
         final List<UsersEntity> users = this.usersService.getList();
 
         return new UsersResponse(
@@ -66,13 +69,13 @@ public class UsersController {
 }
 
 @Schema(description = "ユーザー一覧取得APIのレスポンス")
-record UsersResponse(@Schema(description = "ユーザー情報のリスト") List<UserRecord> users) {}
+record UsersResponse(@Schema(description = "ユーザー情報のリスト") @NotNull List<UserRecord> users) {}
 
 @Schema(description = "ユーザー情報")
 record UserRecord(
-    @Schema(description = "ユーザーID") String id,
-    @Schema(description = "アカウント名") String account,
-    @Schema(description = "ユーザー名") String name,
+    @Schema(description = "ユーザーID") @NotNull String id,
+    @Schema(description = "アカウント名") @NotNull String account,
+    @Schema(description = "ユーザー名") @NotNull String name,
     @Schema(description = "無効化された日時") OffsetDateTime disabledAt,
-    @Schema(description = "役割") Role role
+    @Schema(description = "役割") @NotNull Role role
 ) {}

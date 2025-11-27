@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jp.co.itfllc.WebSystemSamples.advices.ApiUnauthorizedResponse;
 import jp.co.itfllc.WebSystemSamples.advices.ErrorResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 認証関連のAPIエンドポイントを提供するコントローラークラスです。
  */
+@Tag(name = "login")
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
@@ -59,7 +62,7 @@ public class LoginController {
         }
     )
     @PostMapping
-    public AuthTokenResponse postLogin(@RequestBody @Validated final LoginRequest request) throws Exception {
+    public AuthTokenResponse login(@RequestBody @Validated final LoginRequest request) throws Exception {
         final Tokens tokens = this.loginService.login(request.account(), request.password());
 
         return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());
@@ -81,7 +84,7 @@ public class LoginController {
     )
     @ApiUnauthorizedResponse
     @PostMapping("/refresh")
-    public AuthTokenResponse postRefresh(@RequestBody @Validated final RefreshRequest request) throws Exception {
+    public AuthTokenResponse refreshAuthToken(@RequestBody @Validated final RefreshRequest request) throws Exception {
         final Tokens tokens = this.loginService.refreshTokens(request.refreshToken());
 
         return new AuthTokenResponse(tokens.accessToken(), tokens.refreshToken());
@@ -107,6 +110,10 @@ record RefreshRequest(
 
 @Schema(description = "認証トークンレスポンス")
 record AuthTokenResponse(
-    @Schema(description = "アクセストークン", example = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJp...") String accessToken,
-    @Schema(description = "リフレッシュトークン", example = "2OblN1pZsfztw52D4AhXYp7wvvfnuJuJ...") String refreshToken
+    @Schema(description = "アクセストークン", example = "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJp...")
+    @NotNull
+    String accessToken,
+    @Schema(description = "リフレッシュトークン", example = "2OblN1pZsfztw52D4AhXYp7wvvfnuJuJ...")
+    @NotNull
+    String refreshToken
 ) {}

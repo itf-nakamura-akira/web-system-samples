@@ -1,0 +1,375 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Web System Samples",
+    "description" : "Webシステム開発の学習用サンプルアプリケーションです。",
+    "version" : "0.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080/api",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/login" : {
+      "post" : {
+        "tags" : [ "login" ],
+        "summary" : "ログインAPI",
+        "description" : "ユーザーのログイン認証を行い、認証トークンを返却します。",
+        "operationId" : "login",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "ログイン成功時",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AuthTokenResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "アカウントまたはパスワードが誤っている時",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse",
+                  "example" : {
+                    "timestamp" : "2024-01-01T12:00:00",
+                    "status" : 401,
+                    "message" : "アカウントまたはパスワードが誤っています。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login/refresh" : {
+      "post" : {
+        "tags" : [ "login" ],
+        "summary" : "トークンリフレッシュAPI",
+        "description" : "リフレッシュトークンを使用して、新しい認証トークンを取得します。",
+        "operationId" : "refreshAuthToken",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RefreshRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "リフレッシュ成功時",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AuthTokenResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "認証トークンが無効、または有効期限切れの場合",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse",
+                  "example" : {
+                    "timestamp" : "2024-01-01T12:00:00",
+                    "status" : 401,
+                    "message" : "認証トークンが無効、または有効期限切れです。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/common/logout" : {
+      "post" : {
+        "tags" : [ "common" ],
+        "summary" : "ログアウトAPI",
+        "description" : "ユーザーのログアウト処理を実行し、関連するリフレッシュトークンを無効化します。",
+        "operationId" : "logout",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LogoutRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "ログアウト成功時"
+          },
+          "401" : {
+            "description" : "認証トークンが無効、または有効期限切れの場合",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse",
+                  "example" : {
+                    "timestamp" : "2024-01-01T12:00:00",
+                    "status" : 401,
+                    "message" : "認証トークンが無効、または有効期限切れです。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/masters/users" : {
+      "get" : {
+        "tags" : [ "masters-users" ],
+        "summary" : "ユーザー一覧取得API",
+        "description" : "登録されているすべてのユーザー情報を取得します。",
+        "operationId" : "getMastersUsers",
+        "responses" : {
+          "200" : {
+            "description" : "取得成功時",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UsersResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "認証トークンが無効、または有効期限切れの場合",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse",
+                  "example" : {
+                    "timestamp" : "2024-01-01T12:00:00",
+                    "status" : 401,
+                    "message" : "認証トークンが無効、または有効期限切れです。"
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "当APIの実行権限がない場合",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse",
+                  "example" : {
+                    "timestamp" : "2024-01-01T12:00:00",
+                    "status" : 403,
+                    "message" : "このAPIを実行する権限がありません。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/common/loginUser" : {
+      "get" : {
+        "tags" : [ "common" ],
+        "summary" : "ログインユーザー情報取得API",
+        "description" : "現在ログインしているユーザーの情報を取得します。",
+        "operationId" : "getLoginUser",
+        "responses" : {
+          "200" : {
+            "description" : "取得成功時",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GetLoginUserResponse"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "認証トークンが無効、または有効期限切れの場合",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse",
+                  "example" : {
+                    "timestamp" : "2024-01-01T12:00:00",
+                    "status" : 401,
+                    "message" : "認証トークンが無効、または有効期限切れです。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "AuthTokenResponse" : {
+        "type" : "object",
+        "description" : "認証トークンレスポンス",
+        "properties" : {
+          "accessToken" : {
+            "type" : "string",
+            "description" : "アクセストークン",
+            "example" : "eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJp..."
+          },
+          "refreshToken" : {
+            "type" : "string",
+            "description" : "リフレッシュトークン",
+            "example" : "2OblN1pZsfztw52D4AhXYp7wvvfnuJuJ..."
+          }
+        },
+        "required" : [ "accessToken", "refreshToken" ]
+      },
+      "ErrorResponse" : {
+        "type" : "object",
+        "description" : "エラーレスポンス",
+        "properties" : {
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "タイムスタンプ"
+          },
+          "status" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "HTTPステータスコード"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "エラーメッセージ"
+          }
+        }
+      },
+      "LoginRequest" : {
+        "type" : "object",
+        "description" : "ログインAPIのリクエストボディ",
+        "properties" : {
+          "account" : {
+            "type" : "string",
+            "description" : "アカウント名",
+            "example" : "nakamura.akira",
+            "minLength" : 1
+          },
+          "password" : {
+            "type" : "string",
+            "description" : "パスワード",
+            "example" : "password",
+            "minLength" : 1
+          }
+        },
+        "required" : [ "account", "password" ]
+      },
+      "RefreshRequest" : {
+        "type" : "object",
+        "description" : "トークンリフレッシュAPIのリクエストボディ",
+        "properties" : {
+          "refreshToken" : {
+            "type" : "string",
+            "description" : "リフレッシュトークン",
+            "example" : "2OblN1pZsfztw52D4AhXYp7wvvfnuJuJ...",
+            "minLength" : 1
+          }
+        },
+        "required" : [ "refreshToken" ]
+      },
+      "LogoutRequest" : {
+        "type" : "object",
+        "description" : "ログアウトAPIへのリクエスト",
+        "properties" : {
+          "refreshToken" : {
+            "type" : "string",
+            "description" : "リフレッシュトークン",
+            "minLength" : 1
+          }
+        },
+        "required" : [ "refreshToken" ]
+      },
+      "UserRecord" : {
+        "type" : "object",
+        "description" : "ユーザー情報",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "ユーザーID"
+          },
+          "account" : {
+            "type" : "string",
+            "description" : "アカウント名"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "ユーザー名"
+          },
+          "disabledAt" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "無効化された日時"
+          },
+          "role" : {
+            "type" : "string",
+            "description" : "役割",
+            "enum" : [ "Admin", "Common" ]
+          }
+        },
+        "required" : [ "account", "id", "name", "role" ]
+      },
+      "UsersResponse" : {
+        "type" : "object",
+        "description" : "ユーザー一覧取得APIのレスポンス",
+        "properties" : {
+          "users" : {
+            "type" : "array",
+            "description" : "ユーザー情報のリスト",
+            "items" : {
+              "$ref" : "#/components/schemas/UserRecord"
+            }
+          }
+        },
+        "required" : [ "users" ]
+      },
+      "GetLoginUserResponse" : {
+        "type" : "object",
+        "description" : "ログインユーザー情報取得APIのレスポンス",
+        "properties" : {
+          "account" : {
+            "type" : "string",
+            "description" : "アカウント名"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "ユーザー名"
+          },
+          "role" : {
+            "type" : "string",
+            "description" : "役割",
+            "enum" : [ "Admin", "Common" ]
+          }
+        },
+        "required" : [ "account", "name", "role" ]
+      }
+    }
+  }
+}
