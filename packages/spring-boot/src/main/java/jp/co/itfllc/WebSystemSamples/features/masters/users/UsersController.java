@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.OffsetDateTime;
 import java.util.List;
 import jp.co.itfllc.WebSystemSamples.advices.ApiForbiddenResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * ユーザーマスター管理機能に関するAPIエンドポイントを提供するコントローラークラスです。
  */
+@Tag(name = "masters-users")
 @RestController
 @RequestMapping("/masters/users")
 @RequiredArgsConstructor

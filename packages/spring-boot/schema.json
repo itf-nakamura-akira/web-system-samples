@@ -12,7 +12,7 @@
   "paths" : {
     "/login" : {
       "post" : {
-        "tags" : [ "login-controller" ],
+        "tags" : [ "login" ],
         "summary" : "ログインAPI",
         "description" : "ユーザーのログイン認証を行い、認証トークンを返却します。",
         "operationId" : "login",
@@ -57,7 +57,7 @@
     },
     "/login/refresh" : {
       "post" : {
-        "tags" : [ "login-controller" ],
+        "tags" : [ "login" ],
         "summary" : "トークンリフレッシュAPI",
         "description" : "リフレッシュトークンを使用して、新しい認証トークンを取得します。",
         "operationId" : "refreshAuthToken",
@@ -102,7 +102,7 @@
     },
     "/common/logout" : {
       "post" : {
-        "tags" : [ "common-controller" ],
+        "tags" : [ "common" ],
         "summary" : "ログアウトAPI",
         "description" : "ユーザーのログアウト処理を実行し、関連するリフレッシュトークンを無効化します。",
         "operationId" : "logout",
@@ -140,7 +140,7 @@
     },
     "/masters/users" : {
       "get" : {
-        "tags" : [ "users-controller" ],
+        "tags" : [ "masters-users" ],
         "summary" : "ユーザー一覧取得API",
         "description" : "登録されているすべてのユーザー情報を取得します。",
         "operationId" : "getMastersUsers",
@@ -190,7 +190,7 @@
     },
     "/common/loginUser" : {
       "get" : {
-        "tags" : [ "common-controller" ],
+        "tags" : [ "common" ],
         "summary" : "ログインユーザー情報取得API",
         "description" : "現在ログインしているユーザーの情報を取得します。",
         "operationId" : "getLoginUser",
