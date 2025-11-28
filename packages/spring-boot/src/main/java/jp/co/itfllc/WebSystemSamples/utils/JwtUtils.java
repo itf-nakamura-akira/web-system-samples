@@ -46,31 +46,31 @@ public class JwtUtils {
     /**
      * アクセストークンの署名に使用する、Base64エンコードされたPKCS#8形式の秘密鍵です。
      */
-    @Value("${app.jwt.secret-private-key}")
+    @Value("${JWT_SECRET_PRIVATE_KEY}")
     private String privateKeyString;
 
     /**
      * アクセストークンの検証に使用する、Base64エンコードされたX.509形式の公開鍵です。
      */
-    @Value("${app.jwt.secret-public-key}")
+    @Value("${JWT_SECRET_PUBLIC_KEY}")
     private String publicKeyString;
 
     /**
      * JWTの発行者（issuer）を示す文字列です。
      */
-    @Value("${app.jwt.issuer}")
+    @Value("${JWT_ISSUER}")
     private String issuer;
 
     /**
      * アクセストークンの有効期間を分単位で設定します。
      */
-    @Value("${app.jwt.access-token-expire-minutes}")
+    @Value("${JWT_ACCESS_TOKEN_EXPIRE_MINUTES}")
     private long accessTokenExpireMinutes;
 
     /**
      * リフレッシュトークンの有効期間を日単位で設定します。
      */
-    @Value("${app.jwt.refresh-token-expire-days}")
+    @Value("${REFRESH_TOKEN_EXPIRE_DAYS}")
     private long refreshTokenExpireDays;
 
     /**

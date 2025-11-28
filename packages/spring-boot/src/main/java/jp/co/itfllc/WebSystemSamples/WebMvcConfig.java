@@ -3,8 +3,10 @@ package jp.co.itfllc.WebSystemSamples;
 import jp.co.itfllc.WebSystemSamples.interceptors.AdminInterceptor;
 import jp.co.itfllc.WebSystemSamples.interceptors.AuthInterceptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -14,6 +16,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    /**
+     * CORS(Cross-Origin Resource Sharing)のオリジンを定義するプロパティです。
+     * 環境変数 `CORS_ORIGIN` から値が注入されます。
+     */
+    @Value("${CORS_ORIGIN}")
+    private String corsOrigin;
 
     /**
      * リクエストの認証を処理するインターセプターです。
@@ -40,5 +49,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .addPathPatterns("/**")
             .excludePathPatterns("/login/**", "/swagger-ui/**", "/api-docs/**");
         registry.addInterceptor(this.adminInterceptor).addPathPatterns("/masters/**");
+    }
+
+    /**
+     * CORS(Cross-Origin Resource Sharing)設定を追加します。
+     * これにより、異なるオリジンからのリクエストを許可します。
+     *
+     * @param registry CORS設定を登録するためのレジストリ。
+     */
+    @Override
+    public void addCorsMappings(@NonNull final CorsRegistry registry) {
+        registry
+            .addMapping("/**")
+            .allowedOrigins(this.corsOrigin)
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowedHeaders("*")
+            .allowCredentials(true);
     }
 }
