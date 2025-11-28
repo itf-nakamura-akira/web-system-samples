@@ -6,6 +6,13 @@
         "analytics": "ee61494a-c7e5-4967-91a4-687e58a96706",
         "schematicCollections": ["angular-eslint"]
     },
+    "schematics": {
+        "@schematics/angular": {
+            "component": {
+                "changeDetection": "OnPush"
+            }
+        }
+    },
     "newProjectRoot": "projects",
     "projects": {
         "web-system-samples": {
