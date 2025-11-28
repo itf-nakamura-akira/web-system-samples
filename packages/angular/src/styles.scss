@@ -2,8 +2,15 @@
 
 html {
     font-size: 16px;
+    height: 100%;
 }
 
 body {
     font-family: 'Noto Sans JP', sans-serif;
+    height: 100%;
+}
+
+app-root {
+    height: 100%;
+    display: block;
 }

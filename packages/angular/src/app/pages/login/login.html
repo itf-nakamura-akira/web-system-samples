@@ -1,16 +1,30 @@
-<form class="flex flex-col gap-4 mb-4" (submit)="login($event)">
-    <app-form-control label="アカウント" for="account" [errors]="loginFormErrors().account">
-        <input app-input id="account" [field]="loginForm.account" [isInvalid]="loginFormErrors().account" />
-    </app-form-control>
-    <app-form-control label="パスワード" for="password" [errors]="loginFormErrors().password">
-        <input
-            app-input
-            id="password"
-            [field]="loginForm.password"
-            type="password"
-            [isInvalid]="loginFormErrors().password"
-        />
-    </app-form-control>
+<div class="w-full max-w-96 -mt-64">
+    <app-card>
+        <h2 class="text-center text-xl text-gray-600 mb-1">{{ appTitle }}</h2>
+        <h1 class="text-2xl font-bold text-center mb-4">ログイン</h1>
+        <form class="flex flex-col gap-4 mb-4" (submit)="login($event)">
+            <app-form-control label="アカウント" for="account" [errors]="loginFormErrors().account">
+                <input
+                    app-input
+                    id="account"
+                    class="w-full"
+                    [field]="loginForm.account"
+                    [isInvalid]="loginFormErrors().account"
+                    #accountInput
+                />
+            </app-form-control>
+            <app-form-control label="パスワード" for="password" [errors]="loginFormErrors().password">
+                <input
+                    app-input
+                    id="password"
+                    class="w-full"
+                    [field]="loginForm.password"
+                    type="password"
+                    [isInvalid]="loginFormErrors().password"
+                />
+            </app-form-control>
 
-    <button app-button type="submit" variant="primary">ログイン</button>
-</form>
+            <button app-button class="mt-4" type="submit" variant="primary">ログイン</button>
+        </form>
+    </app-card>
+</div>

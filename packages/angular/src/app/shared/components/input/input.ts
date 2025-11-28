@@ -1,4 +1,4 @@
-import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, ElementRef, inject, input } from '@angular/core';
 
 /**
  * テキスト入力のサイズ
@@ -40,6 +40,11 @@ export type InputSize = 'small' | 'medium' | 'large';
 })
 export class Input {
     /**
+     * ElementRef
+     */
+    private readonly elementRef = inject(ElementRef);
+
+    /**
      * 入力欄のサイズ
      */
     readonly size = input<InputSize>('medium');
@@ -58,4 +63,11 @@ export class Input {
      * 不正な値
      */
     readonly isInvalid = input(false, { transform: booleanAttribute });
+
+    /**
+     * フォーカスする
+     */
+    focus(): void {
+        this.elementRef.nativeElement.focus();
+    }
 }
