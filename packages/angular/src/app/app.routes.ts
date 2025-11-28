@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 /**
- *
+ * アプリケーションのルーティング設定
  */
 export const routes: Routes = [
     {
