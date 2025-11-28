@@ -33,4 +33,10 @@ describe('Input', () => {
     it('should have "form-control" class', () => {
         expect(inputElement.classList).toContain('form-control');
     });
+
+    it('should focus the input element when focus() is called', () => {
+        const inputDirective = fixture.debugElement.query(By.directive(Input)).injector.get(Input);
+        inputDirective.focus();
+        expect(document.activeElement).toBe(inputElement);
+    });
 });
