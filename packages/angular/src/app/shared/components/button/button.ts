@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 /**
@@ -20,8 +19,6 @@ export type ButtonSize = 'small' | 'medium' | 'large';
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'button[app-button]',
-    standalone: true,
-    imports: [CommonModule],
     templateUrl: './button.html',
     styleUrl: './button.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

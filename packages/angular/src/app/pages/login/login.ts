@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { Button } from '../../shared/components/button/button';
+import { FormControlComponent } from '../../shared/components/form-control/form-control';
 import { Input } from '../../shared/components/input/input';
 
 /**
@@ -8,7 +8,7 @@ import { Input } from '../../shared/components/input/input';
  */
 @Component({
     selector: 'app-login',
-    imports: [RouterLink, Button, Input],
+    imports: [Button, Input, FormControlComponent],
     templateUrl: './login.html',
     styleUrl: './login.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,

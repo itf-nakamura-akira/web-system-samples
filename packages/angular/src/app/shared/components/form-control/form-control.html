@@ -1,0 +1,15 @@
+<label class="flex flex-col gap-1" [class.text-red-700]="isInvalid()" [for]="for()">
+    <span class="font-semibold">{{ label() }}</span>
+    <div class="leading-none">
+        <ng-content></ng-content>
+    </div>
+</label>
+<div class="text-xs">
+    @if (isInvalid()) {
+        @for (error of errors(); track error) {
+            <p class="text-red-700">{{ error }}</p>
+        }
+    } @else if (caption()) {
+        <p class="text-gray-600">{{ caption() }}</p>
+    }
+</div>

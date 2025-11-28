@@ -1,15 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 /**
  * テキスト入力のサイズ
  */
 export type InputSize = 'small' | 'medium' | 'large';
-
-/**
- * テキスト入力のタイプ
- */
-export type InputType = 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url';
 
 /**
  * テキスト入力コンポーネント
@@ -19,8 +13,6 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'search' | 't
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'input[app-input]',
-    standalone: true,
-    imports: [CommonModule],
     templateUrl: './input.html',
     styleUrls: ['./input.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,8 +22,20 @@ export type InputType = 'text' | 'email' | 'password' | 'number' | 'search' | 't
         '[class.form-control-large]': 'size() === "large"',
         '[class.form-control-monospace]': 'monospace()',
         '[attr.disabled]': 'disabled() ? true : null',
-        '[attr.placeholder]': 'placeholder()',
-        '[attr.type]': 'type()',
+        '[class.align-middle]': 'true',
+        '[class.rounded-md]': 'true',
+        '[class.shadow-sm]': 'true',
+        '[class.transition-colors]': 'true',
+        '[class.text-red-700]': 'isInvalid()',
+        '[class.text-gray-600]': 'disabled() && !isInvalid()',
+        '[class.bg-gray-100]': 'disabled()',
+        '[class.cursor-not-allowed]': 'disabled()',
+        '[class.border]': 'true',
+        '[class.border-red-700]': 'isInvalid()',
+        '[class.border-gray-300]': '!isInvalid()',
+        '[class.focus:border-red-700]': 'isInvalid()',
+        '[class.focus:border-blue-500]': '!isInvalid()',
+        '[class.focus:outline-none]': 'true',
     },
 })
 export class Input {
@@ -51,12 +55,7 @@ export class Input {
     readonly disabled = input(false, { transform: booleanAttribute });
 
     /**
-     * プレースホルダー
+     * 不正な値
      */
-    readonly placeholder = input<string | undefined>(undefined);
-
-    /**
-     * 入力タイプ
-     */
-    readonly type = input<InputType>('text');
+    readonly isInvalid = input(false, { transform: booleanAttribute });
 }

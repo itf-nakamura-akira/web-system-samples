@@ -1,9 +1,15 @@
-<p>login works!</p>
-<div><a routerLink="/home">home</a></div>
-
 <div class="flex flex-col gap-4 mb-4">
-    <input app-input placeholder="xxxxxxxx@itfllc.co.jp" />
-    <input app-input type="password" />
+    <app-form-control label="メールアドレス" for="email" caption="テスト用アカウントは">
+        <input app-input id="email" placeholder="xxxxxxxx@itfllc.co.jp" [isInvalid]="false" />
+    </app-form-control>
+    <app-form-control
+        label="パスワード"
+        for="password"
+        caption="テスト用アカウントは"
+        [errors]="['テスト用アカウントは', 'テスト用アカウントは']"
+    >
+        <input app-input id="password" type="password" [isInvalid]="true" />
+    </app-form-control>
 </div>
 
 <button app-button variant="primary">ログイン</button>

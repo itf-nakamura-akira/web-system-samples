@@ -27,6 +27,7 @@
             },
             "extensions": [
                 "angular.ng-template",
+                "bradlc.vscode-tailwindcss",
                 "dbaeumer.vscode-eslint",
                 "eamodio.gitlens",
                 "EditorConfig.EditorConfig",
