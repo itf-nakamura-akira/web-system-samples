@@ -24,7 +24,7 @@
                 <p class="text-sm font-medium">{{ title() }}</p>
             }
             @if (description()) {
-                <p class="text-sm">{{ description() }}</p>
+                <p class="text-sm" [class.mt-1]="title()">{{ description() }}</p>
             }
         </div>
         @if (dismissible()) {
