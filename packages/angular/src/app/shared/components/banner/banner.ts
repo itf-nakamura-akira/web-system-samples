@@ -38,7 +38,7 @@ export type BannerTone = 'info' | 'critical' | 'success' | 'warning';
     styleUrl: './banner.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
-        class: 'Banner',
+        class: 'block',
     },
 })
 export class Banner {

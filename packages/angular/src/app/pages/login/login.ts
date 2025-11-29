@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, v
 import { Field, form, required } from '@angular/forms/signals';
 import { LoginService } from '../../shared/api/login/login.service';
 import { LoginRequest } from '../../shared/api/model';
+import { Banner } from '../../shared/components/banner/banner';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
 import { FormControlComponent } from '../../shared/components/form-control/form-control';
@@ -14,7 +15,7 @@ import { APP_TITLE } from '../../shared/tokens/app-title.token';
  */
 @Component({
     selector: 'app-login',
-    imports: [Button, Input, FormControlComponent, Field, Card],
+    imports: [Button, Input, FormControlComponent, Field, Card, Banner],
     templateUrl: './login.html',
     host: {
         class: 'flex justify-center items-center h-full',
@@ -62,6 +63,11 @@ export default class Login {
     }));
 
     /**
+     * APIからのエラーメッセージ
+     */
+    readonly apiErrorMessage = signal<string>('');
+
+    /**
      * コンストラクター
      */
     constructor() {
@@ -87,9 +93,7 @@ export default class Login {
             next: (response) => {
                 console.log('ログイン成功', response);
             },
-            error: (error) => {
-                console.error('ログイン失敗', error);
-            },
+            error: (response) => this.apiErrorMessage.set(response.error.message),
         });
     }
 }

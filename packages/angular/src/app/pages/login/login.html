@@ -1,7 +1,10 @@
-<div class="w-full max-w-96 -mt-64">
+<div class="w-full max-w-100 -mt-64">
     <app-card>
         <h2 class="text-center text-xl text-gray-600 mb-1">{{ appTitle }}</h2>
         <h1 class="text-2xl font-bold text-center mb-4">ログイン</h1>
+        @if (apiErrorMessage()) {
+            <app-banner class="mb-4" tone="critical" [description]="apiErrorMessage()"></app-banner>
+        }
         <form class="flex flex-col gap-4 mb-4" (submit)="login($event)">
             <app-form-control label="アカウント" for="account" [errors]="loginFormErrors().account">
                 <input
