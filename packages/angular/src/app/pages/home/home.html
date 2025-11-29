@@ -1,3 +1,29 @@
-<p>home works!</p>
+<div class="p-4 space-y-4">
+    <app-banner
+        title="This is an info banner"
+        description="This is a description of the info banner."
+        tone="info"
+        [dismissible]="true"
+    ></app-banner>
+    <app-banner
+        title="This is a critical banner"
+        description="This is a description of the critical banner."
+        tone="critical"
+        [dismissible]="true"
+    ></app-banner>
+    <app-banner
+        title="This is a success banner"
+        description="This is a description of the success banner."
+        tone="success"
+        [dismissible]="true"
+    ></app-banner>
+    <app-banner
+        title="This is a warning banner"
+        description="This is a description of the warning banner."
+        tone="warning"
+        [dismissible]="true"
+    ></app-banner>
+</div>
+
 <div><a routerLink="/login">login</a></div>
 <div><a routerLink="/masters/users">user management</a></div>
