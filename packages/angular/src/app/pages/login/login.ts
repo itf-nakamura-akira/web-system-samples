@@ -30,19 +30,12 @@ export default class Login {
     /**
      * アカウント入力要素
      */
-    readonly accountInput = viewChild<Input>('accountInput');
+    readonly accountInput = viewChild.required<Input>('accountInput');
 
     /**
      * アプリケーションタイトル
      */
     readonly appTitle = inject(APP_TITLE);
-
-    /**
-     * コンストラクター
-     */
-    constructor() {
-        effect(() => this.accountInput()?.focus());
-    }
 
     /**
      * ログインリクエスト
@@ -67,6 +60,13 @@ export default class Login {
         account: getFieldErrors(this.loginForm.account),
         password: getFieldErrors(this.loginForm.password),
     }));
+
+    /**
+     * コンストラクター
+     */
+    constructor() {
+        effect(() => this.accountInput().focus());
+    }
 
     /**
      * ログイン
