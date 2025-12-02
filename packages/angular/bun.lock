@@ -12,6 +12,7 @@
         "@angular/forms": "^21.0.0",
         "@angular/platform-browser": "^21.0.0",
         "@angular/router": "^21.0.0",
+        "@primer/octicons": "^19.21.1",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0",
       },
@@ -22,6 +23,7 @@
         "@angular/compiler-cli": "^21.0.0",
         "@eslint/js": "^9.39.1",
         "@tailwindcss/postcss": "^4.1.17",
+        "@types/primer__octicons": "19.11.1",
         "ajv": "^8.17.1",
         "angular-eslint": "21.0.1",
         "eslint": "^9.39.1",
@@ -466,6 +468,8 @@
 
     "@parcel/watcher-win32-x64": ["@parcel/watcher-win32-x64@2.5.1", "", { "os": "win32", "cpu": "x64" }, "sha512-9lHBdJITeNR++EvSQVUcaZoWupyHfXe1jZvGZ06O/5MflPcuPLtEphScIBL+AiCWBO46tDSHzWyD0uDmmZqsgA=="],
 
+    "@primer/octicons": ["@primer/octicons@19.21.1", "", { "dependencies": { "object-assign": "^4.1.1" } }, "sha512-7tgtBkCNcg75YJnckinzvES+uxysYQCe+CHSEnzr3VYgxttzKRvfmrnVogl3aEuHCQP4xhiE9k2lFDhYwGtTzQ=="],
+
     "@rolldown/binding-android-arm64": ["@rolldown/binding-android-arm64@1.0.0-beta.47", "", { "os": "android", "cpu": "arm64" }, "sha512-vPP9/MZzESh9QtmvQYojXP/midjgkkc1E4AdnPPAzQXo668ncHJcVLKjJKzoBdsQmaIvNjrMdsCwES8vTQHRQw=="],
 
     "@rolldown/binding-darwin-arm64": ["@rolldown/binding-darwin-arm64@1.0.0-beta.47", "", { "os": "darwin", "cpu": "arm64" }, "sha512-Lc3nrkxeaDVCVl8qR3qoxh6ltDZfkQ98j5vwIr5ALPkgjZtDK4BGCrrBoLpGVMg+csWcaqUbwbKwH5yvVa0oOw=="],
@@ -647,6 +651,8 @@
     "@types/json-schema": ["@types/json-schema@7.0.15", "", {}, "sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA=="],
 
     "@types/node": ["@types/node@24.10.1", "", { "dependencies": { "undici-types": "~7.16.0" } }, "sha512-GNWcUTRBgIRJD5zj+Tq0fKOJ5XZajIiBroOF0yvj2bSU1WvNdYS/dn9UxwsujGW4JX06dnHyjV2y9rRaybH0iQ=="],
+
+    "@types/primer__octicons": ["@types/primer__octicons@19.11.1", "", {}, "sha512-LUA7RXof2jpz8Luhcyhc6SzQQa/5Fs/tnn/W5ZcLYcFdI7JW1RYVG1+19MkgnPQL4i3yriTfZFsFkLenWyspNA=="],
 
     "@types/unist": ["@types/unist@3.0.3", "", {}, "sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q=="],
 

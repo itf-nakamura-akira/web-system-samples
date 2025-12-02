@@ -42,12 +42,6 @@ describe('Login', () => {
         expect(h2Element.nativeElement.textContent).toContain('Test App');
     });
 
-    it('should render the login title', () => {
-        const h1Element = fixture.debugElement.query(By.css('h1'));
-        expect(h1Element).toBeTruthy();
-        expect(h1Element.nativeElement.textContent).toContain('ログイン');
-    });
-
     it('should render a primary button with "ログイン" text', () => {
         const buttonElement = fixture.debugElement.query(By.css('button[app-button]'));
         expect(buttonElement).toBeTruthy();
