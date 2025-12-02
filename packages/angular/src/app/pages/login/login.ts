@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, viewChild } from '@angular/core';
-import { Field, form, required } from '@angular/forms/signals';
+import { disabled, Field, form, required } from '@angular/forms/signals';
+import { finalize } from 'rxjs';
 import { LoginService } from '../../shared/api/login/login.service';
 import { LoginRequest } from '../../shared/api/model';
 import { Banner } from '../../shared/components/banner/banner';
@@ -52,6 +53,7 @@ export default class Login {
     readonly loginForm = form(this.loginModel, (schemaPath) => {
         required(schemaPath.account, { message: 'アカウントを入力してください。' });
         required(schemaPath.password, { message: 'パスワードを入力してください。' });
+        disabled(schemaPath, () => this.isLoginProcessing());
     });
 
     /**
@@ -61,6 +63,11 @@ export default class Login {
         account: getFieldErrors(this.loginForm.account),
         password: getFieldErrors(this.loginForm.password),
     }));
+
+    /**
+     * ログイン処理中フラグ
+     */
+    readonly isLoginProcessing = signal<boolean>(false);
 
     /**
      * APIからのエラーメッセージ
@@ -89,11 +96,15 @@ export default class Login {
 
         const loginRequest: LoginRequest = this.loginModel();
 
-        this.loginService.login(loginRequest).subscribe({
-            next: (response) => {
-                console.log('ログイン成功', response);
-            },
-            error: (response) => this.apiErrorMessage.set(response.error.message),
-        });
+        this.isLoginProcessing.set(true);
+        this.loginService
+            .login(loginRequest)
+            .pipe(finalize(() => this.isLoginProcessing.set(false)))
+            .subscribe({
+                next: (response) => {
+                    console.log('ログイン成功', response);
+                },
+                error: (response) => this.apiErrorMessage.set(response.error.message),
+            });
     }
 }

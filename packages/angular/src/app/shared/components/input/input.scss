@@ -20,4 +20,11 @@
     &.form-control-monospace {
         font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     }
+
+    &:disabled,
+    &[disabled] {
+        background-color: var(--color-gray-200);
+        color: var(--color-gray-600);
+        cursor: not-allowed;
+    }
 }
